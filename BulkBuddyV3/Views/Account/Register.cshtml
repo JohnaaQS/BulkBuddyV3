@@ -1,0 +1,116 @@
+@model BulkBuddy.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registreren";
+}
+
+<section class="auth-shell">
+    <div class="auth-card auth-card-wide">
+        <h1>Account aanmaken</h1>
+        <p>Maak een nieuw BulkBuddy account aan.</p>
+
+        <form asp-controller="Account" asp-action="Register" method="post" class="auth-form">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+            <div class="auth-grid">
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-input" />
+                    <span asp-validation-for="Username" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-input" />
+                    <span asp-validation-for="Email" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-input" />
+                    <span asp-validation-for="Password" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-input" />
+                    <span asp-validation-for="ConfirmPassword" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" class="form-input" />
+                    <span asp-validation-for="Age" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="HeightCm"></label>
+                    <input asp-for="HeightCm" class="form-input" />
+                    <span asp-validation-for="HeightCm" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="WeightKg"></label>
+                    <input asp-for="WeightKg" class="form-input" />
+                    <span asp-validation-for="WeightKg" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TargetWeightKg"></label>
+                    <input asp-for="TargetWeightKg" class="form-input" />
+                    <span asp-validation-for="TargetWeightKg" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Goal"></label>
+                    <select asp-for="Goal" class="form-input">
+                        <option value="bulk">bulk</option>
+                        <option value="cut">cut</option>
+                        <option value="maintenance">maintenance</option>
+                    </select>
+                    <span asp-validation-for="Goal" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GoalPhase"></label>
+                    <select asp-for="GoalPhase" class="form-input">
+                        <option value="bulk">bulk</option>
+                        <option value="cut">cut</option>
+                        <option value="maintenance">maintenance</option>
+                    </select>
+                    <span asp-validation-for="GoalPhase" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Sex"></label>
+                    <select asp-for="Sex" class="form-input">
+                        <option value="Man">Man</option>
+                        <option value="Vrouw">Vrouw</option>
+                    </select>
+                    <span asp-validation-for="Sex" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TrainingFrequencyPerWeek"></label>
+                    <input asp-for="TrainingFrequencyPerWeek" class="form-input" />
+                    <span asp-validation-for="TrainingFrequencyPerWeek" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ActivityMultiplier"></label>
+                    <input asp-for="ActivityMultiplier" class="form-input" />
+                    <span asp-validation-for="ActivityMultiplier" class="validation-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="dashboard-link">Account aanmaken</button>
+        </form>
+
+        <p class="auth-switch">
+            Al een account?
+            <a asp-controller="Account" asp-action="Login">Ga naar login</a>
+        </p>
+    </div>
+</section>
