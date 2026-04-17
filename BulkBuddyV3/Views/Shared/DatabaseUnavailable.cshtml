@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Database niet beschikbaar";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Database niet beschikbaar</h1>
+        <p class="hero-text">De applicatie kan op dit moment geen verbinding maken met de database.</p>
+    </div>
+</section>
+
+<section class="dashboard-card">
+    <p>Controleer of Docker en PostgreSQL actief zijn en probeer het daarna opnieuw.</p>
+
+    <div class="action-list" style="margin-top:20px;">
+        <a asp-controller="Account" asp-action="Login" class="dashboard-link">Terug naar login</a>
+    </div>
+</section>

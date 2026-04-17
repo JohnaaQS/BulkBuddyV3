@@ -15,12 +15,14 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
-        if (HttpContext.Session.GetInt32("UserId") is null)
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
         {
             return RedirectToAction("Login", "Account");
         }
 
-        var viewModel = await _dashboardService.GetDashboardAsync();
+        var viewModel = await _dashboardService.GetDashboardAsync(userId.Value);
 
         if (viewModel is null)
         {

@@ -31,6 +31,7 @@ builder.Services.AddScoped<CalorieCalculatorService>();
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<MealsPageService>();
 
 var app = builder.Build();
 
@@ -45,7 +46,7 @@ app.UseRouting();
 // Session middleware moet vóór MapControllerRoute staan.
 app.UseSession();
 
-// Start nu liever op login, niet direct dashboard.
+// Start op login, niet dashboard.
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");

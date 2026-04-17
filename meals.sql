@@ -13,7 +13,7 @@ INSERT INTO meal_entries
 )
 VALUES
 (
-    1,
+    3,
     CURRENT_DATE,
     CURRENT_DATE,
     'breakfast',
@@ -25,7 +25,7 @@ VALUES
     'Whey, oats, banana, peanut butter'
 ),
 (
-    1,
+    3,
     CURRENT_DATE,
     CURRENT_DATE,
     'lunch',
@@ -37,7 +37,7 @@ VALUES
     'Chicken, rice, broccoli, sauce'
 ),
 (
-    1,
+    3,
     CURRENT_DATE,
     CURRENT_DATE,
     'dinner',

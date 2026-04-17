@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BulkBuddyV3")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca9e6d5003df75bdb37539bb5a44ccd963eae884")]
 [assembly: System.Reflection.AssemblyProductAttribute("BulkBuddyV3")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BulkBuddyV3")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

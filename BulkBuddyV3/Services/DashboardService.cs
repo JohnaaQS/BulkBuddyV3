@@ -20,9 +20,9 @@ public class DashboardService
         _calorieCalculatorService = calorieCalculatorService;
     }
 
-    public async Task<DashboardViewModel?> GetDashboardAsync()
+    public async Task<DashboardViewModel?> GetDashboardAsync(int userId)
     {
-        var user = await _userRepository.GetFirstUserAsync();
+        var user = await _userRepository.GetByIdAsync(userId);
 
         if (user is null)
         {

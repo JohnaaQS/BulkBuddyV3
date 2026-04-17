@@ -1,6 +1,7 @@
 using BulkBuddy.Models.ViewModels;
 using BulkBuddy.Services;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql; 
 
 namespace BulkBuddy.Controllers;
 
@@ -34,18 +35,25 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = await _authenticationService.LoginAsync(model);
-
-        if (user is null)
+        try
         {
-            ModelState.AddModelError(string.Empty, "Ongeldige inloggegevens.");
-            return View(model);
+            var user = await _authenticationService.LoginAsync(model);
+
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, "Ongeldige inloggegevens.");
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("Username", user.Username);
+
+            return RedirectToAction("Index", "Dashboard");
         }
-
-        HttpContext.Session.SetInt32("UserId", user.Id);
-        HttpContext.Session.SetString("Username", user.Username);
-
-        return RedirectToAction("Index", "Dashboard");
+        catch (NpgsqlException)
+        {
+            return View("~/Views/Shared/DatabaseUnavailable.cshtml");
+        }
     }
 
     [HttpGet]

@@ -100,3 +100,4 @@
 /Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddyV3/obj/Debug/net10.0/BulkBuddyV3.genruntimeconfig.cache
 /Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddyV3/obj/Debug/net10.0/ref/BulkBuddyV3.dll
 /Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddyV3/obj/Debug/net10.0/compressed/gtfmswyp1b-{0}-ecqiv68txi-ecqiv68txi.gz
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddyV3/obj/Debug/net10.0/BulkBuddyV3.sourcelink.json

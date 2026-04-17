@@ -1,0 +1,54 @@
+@model BulkBuddy.Models.ViewModels.MealsIndexViewModel
+
+@{
+    ViewData["Title"] = "Meals";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Meals</h1>
+        <p class="hero-text">Overzicht van jouw maaltijden van vandaag.</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Vandaag</h2>
+        <p><strong>Gebruiker:</strong> @Model.Username</p>
+        <p><strong>Datum:</strong> @Model.SelectedDate.ToString("dd-MM-yyyy")</p>
+        <p><strong>Aantal meals:</strong> @Model.MealsLoggedToday</p>
+        <p><strong>Totaal kcal:</strong> @Model.TotalCaloriesToday</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Status</h2>
+        <p>Hier zie je welke maaltijden vandaag zijn gelogd.</p>
+        <p>In de volgende iteratie kan deze pagina worden uitgebreid met saved meals en handmatige invoer.</p>
+    </article>
+</section>
+
+<section style="margin-top: 24px;">
+    <article class="dashboard-card">
+        <h2>Meals van vandaag</h2>
+
+        @if (!Model.Meals.Any())
+        {
+            <p>Er zijn vandaag nog geen meals gelogd.</p>
+        }
+        else
+        {
+            <div class="action-list">
+                @foreach (var meal in Model.Meals)
+                {
+                    <div class="dashboard-card" style="margin-top: 12px;">
+                        <p><strong>Naam:</strong> @meal.Name</p>
+                        <p><strong>Moment:</strong> @meal.MealSlot</p>
+                        <p><strong>Kcal:</strong> @meal.TotalCalories</p>
+                        <p><strong>Macro's:</strong> P @meal.ProteinGrams / C @meal.CarbsGrams / F @meal.FatsGrams</p>
+                        <p><strong>Samenvatting:</strong> @meal.IngredientSummary</p>
+                    </div>
+                }
+            </div>
+        }
+    </article>
+</section>
