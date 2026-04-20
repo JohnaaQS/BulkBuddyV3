@@ -1,0 +1,12 @@
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/bin/Debug/net10.0/BulkBuddy.Business.deps.json
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/bin/Debug/net10.0/BulkBuddy.Business.dll
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/bin/Debug/net10.0/BulkBuddy.Business.pdb
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.GeneratedMSBuildEditorConfig.editorconfig
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.AssemblyInfoInputs.cache
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.AssemblyInfo.cs
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.csproj.CoreCompileInputs.cache
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.sourcelink.json
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.dll
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/refint/BulkBuddy.Business.dll
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/BulkBuddy.Business.pdb
+/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/obj/Debug/net10.0/ref/BulkBuddy.Business.dll

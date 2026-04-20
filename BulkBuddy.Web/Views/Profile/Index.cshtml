@@ -1,0 +1,46 @@
+@model BulkBuddy.Business.Models.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Profile</h1>
+        <p class="hero-text">Hier zie je jouw account- en doelgegevens.</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Account</h2>
+        <p><strong>Gebruikersnaam:</strong> @Model.Username</p>
+        <p><strong>E-mail:</strong> @Model.Email</p>
+        <p><strong>Leeftijd:</strong> @Model.Age</p>
+        <p><strong>Geslacht:</strong> @Model.Sex</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Lichaamsgegevens</h2>
+        <p><strong>Lengte:</strong> @Model.HeightCm cm</p>
+        <p><strong>Gewicht:</strong> @Model.WeightKg kg</p>
+        <p><strong>Doelgewicht:</strong> @Model.TargetWeightKg kg</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Doelen</h2>
+        <p><strong>Goal:</strong> @Model.Goal</p>
+        <p><strong>Goal phase:</strong> @Model.GoalPhase</p>
+        <p><strong>Trainingen per week:</strong> @Model.TrainingFrequencyPerWeek</p>
+        <p><strong>Activity multiplier:</strong> @Model.ActivityMultiplier</p>
+    </article>
+
+
+    <article class="dashboard-card">
+        <h2>Acties</h2>
+        <div class="action-list">
+            <a asp-controller="Profile" asp-action="Edit" class="dashboard-link">Profiel aanpassen</a>
+        </div>
+    </article>
+
+</section>

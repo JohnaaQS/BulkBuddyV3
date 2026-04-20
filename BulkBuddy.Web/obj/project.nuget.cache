@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "LD1s4k6gPSo=",
+  "success": true,
+  "projectFilePath": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/BulkBuddy.Web.csproj",
+  "expectedPackageFiles": [
+    "/Users/johnaaqs/.nuget/packages/dapper/2.1.72/dapper.2.1.72.nupkg.sha512",
+    "/Users/johnaaqs/.nuget/packages/npgsql/10.0.2/npgsql.10.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

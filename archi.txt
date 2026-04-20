@@ -1,0 +1,13 @@
+Presentation Layer
+- Controllers
+- Views
+- ViewModels
+
+Business Layer
+- Services
+- Domain model (User)
+
+Data Access Layer
+- Repositories
+- DbConnectionFactory
+- PostgreSQL

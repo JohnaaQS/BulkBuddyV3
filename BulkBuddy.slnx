@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BulkBuddy.Business/BulkBuddy.Business.csproj" />
+  <Project Path="BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj" />
+  <Project Path="BulkBuddy.Web/BulkBuddy.Web.csproj" />
+</Solution>

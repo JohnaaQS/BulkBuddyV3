@@ -1,0 +1,2724 @@
+ROOT: repo-root
+FILE: BulkBuddy.slnx
+----- CONTENT START -----
+
+<Solution>
+</Solution>
+
+----- CONTENT END -----
+
+ROOT: repo-root
+FILE: BulkBuddyV3.slnx
+----- CONTENT START -----
+
+<Solution>
+</Solution>
+
+----- CONTENT END -----
+
+ROOT: repo-root
+FILE: meals.sql
+----- CONTENT START -----
+
+INSERT INTO meal_entries
+(
+    user_id,
+    entry_date,
+    meal_date,
+    meal_slot,
+    name,
+    total_calories,
+    protein_grams,
+    carbs_grams,
+    fats_grams,
+    ingredient_summary
+)
+VALUES
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'breakfast',
+    'Breakfast shake',
+    720,
+    45,
+    78,
+    18,
+    'Whey, oats, banana, peanut butter'
+),
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'lunch',
+    'Chicken rice bowl',
+    890,
+    62,
+    95,
+    22,
+    'Chicken, rice, broccoli, sauce'
+),
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'dinner',
+    'Salmon potato plate',
+    810,
+    48,
+    70,
+    30,
+    'Salmon, potatoes, vegetables'
+);
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/BulkBuddy.Business.csproj
+----- CONTENT START -----
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/Domain/User.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Business.Models.Domain;
+
+// Domeinmodel van een gebruiker.
+// anamic/rich models 
+public class User
+{
+    public int Id { get; set; }
+
+    public string Username { get; set; } = "";
+    public string Email { get; set; } = "";
+
+    // Nodig voor authenticatie.
+    public string PasswordHash { get; set; } = "";
+    public string PasswordSalt { get; set; } = "";
+
+    public int Age { get; set; }
+    public decimal HeightCm { get; set; }
+    public decimal WeightKg { get; set; }
+    public decimal TargetWeightKg { get; set; }
+
+    public string Goal { get; set; } = "";
+    public string GoalPhase { get; set; } = "";
+    public string Sex { get; set; } = "Man";
+
+    public int TrainingFrequencyPerWeek { get; set; }
+    public decimal ActivityMultiplier { get; set; }
+
+    public bool OnboardingCompleted { get; set; }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/DashboardViewModel.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor de dashboardpagina.
+public class DashboardViewModel
+{
+    public string Username { get; set; } = "";
+    public decimal WeightKg { get; set; }
+    public decimal HeightCm { get; set; }
+    public decimal TargetWeightKg { get; set; }
+    public string GoalPhase { get; set; } = "";
+    public int CalorieTarget { get; set; }
+
+    public string WelcomeMessage { get; set; } = "";
+    public string GoalSummary { get; set; } = "";
+
+    // Dashboarddata voor de huidige dag.
+    public int CaloriesToday { get; set; }
+    public int MealsLoggedToday { get; set; }
+
+    // Extra voedingsprogressie voor de dashboardkaart.
+    public int RemainingCalories { get; set; }
+    public int CalorieProgressPercent { get; set; }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/EditProfileViewModel.cs
+----- CONTENT START -----
+
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor het aanpassen van het profiel.
+public class EditProfileViewModel
+{
+    [Required(ErrorMessage = "Gebruikersnaam is verplicht.")]
+    [StringLength(64)]
+    public string Username { get; set; } = "";
+
+    [Required(ErrorMessage = "E-mail is verplicht.")]
+    [EmailAddress(ErrorMessage = "Voer een geldig e-mailadres in.")]
+    [StringLength(254)]
+    public string Email { get; set; } = "";
+
+    [Range(13, 120, ErrorMessage = "Leeftijd moet tussen 13 en 120 liggen.")]
+    public int Age { get; set; }
+
+    [Range(typeof(decimal), "1", "300")]
+    [Display(Name = "Lengte (cm)")]
+    public decimal HeightCm { get; set; }
+
+    [Range(typeof(decimal), "1", "500")]
+    [Display(Name = "Gewicht (kg)")]
+    public decimal WeightKg { get; set; }
+
+    [Range(typeof(decimal), "1", "500")]
+    [Display(Name = "Doelgewicht (kg)")]
+    public decimal TargetWeightKg { get; set; }
+
+    [Required]
+    [StringLength(32)]
+    public string Goal { get; set; } = "bulk";
+
+    [Required]
+    [StringLength(32)]
+    [Display(Name = "Goal phase")]
+    public string GoalPhase { get; set; } = "bulk";
+
+    [Required]
+    [StringLength(16)]
+    public string Sex { get; set; } = "Man";
+
+    [Range(0, 14)]
+    [Display(Name = "Trainingen per week")]
+    public int TrainingFrequencyPerWeek { get; set; }
+
+    [Range(typeof(decimal), "1.0", "3.0")]
+    [Display(Name = "Activity multiplier")]
+    public decimal ActivityMultiplier { get; set; }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/LoginViewModel.cs
+----- CONTENT START -----
+
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor het loginformulier.
+public class LoginViewModel
+{
+    [Required(ErrorMessage = "Gebruikersnaam of e-mail is verplicht.")]
+    [Display(Name = "Gebruikersnaam of e-mail")]
+    public string UsernameOrEmail { get; set; } = "";
+
+    [Required(ErrorMessage = "Wachtwoord is verplicht.")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; } = "";
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/MealEntryViewModel.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor één meal entry op de meals-pagina.
+public class MealEntryViewModel
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+    public string MealSlot { get; set; } = "";
+    public int TotalCalories { get; set; }
+    public int ProteinGrams { get; set; }
+    public int CarbsGrams { get; set; }
+    public int FatsGrams { get; set; }
+    public string IngredientSummary { get; set; } = "";
+    public DateOnly MealDate { get; set; }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/MealsIndexViewModel.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor de volledige meals overzichtspagina.
+public class MealsIndexViewModel
+{
+    public string Username { get; set; } = "";
+    public DateTime SelectedDate { get; set; }
+    public int TotalCaloriesToday { get; set; }
+    public int MealsLoggedToday { get; set; }
+
+    public List<MealEntryViewModel> Meals { get; set; } = new();
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/ProfileViewModel.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor de profielpagina.
+public class ProfileViewModel
+{
+    public string Username { get; set; } = "";
+    public string Email { get; set; } = "";
+    public int Age { get; set; }
+    public decimal HeightCm { get; set; }
+    public decimal WeightKg { get; set; }
+    public decimal TargetWeightKg { get; set; }
+    public string Goal { get; set; } = "";
+    public string GoalPhase { get; set; } = "";
+    public string Sex { get; set; } = "";
+    public int TrainingFrequencyPerWeek { get; set; }
+    public decimal ActivityMultiplier { get; set; }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Models/ViewModels/RegisterViewModel.cs
+----- CONTENT START -----
+
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+// ViewModel voor het registratieformulier.
+public class RegisterViewModel
+{
+    [Required(ErrorMessage = "Gebruikersnaam is verplicht.")]
+    [StringLength(64)]
+    public string Username { get; set; } = "";
+
+    [Required(ErrorMessage = "E-mail is verplicht.")]
+    [EmailAddress(ErrorMessage = "Voer een geldig e-mailadres in.")]
+    [StringLength(254)]
+    public string Email { get; set; } = "";
+
+    [Required(ErrorMessage = "Wachtwoord is verplicht.")]
+    [DataType(DataType.Password)]
+    [MinLength(6, ErrorMessage = "Wachtwoord moet minimaal 6 tekens hebben.")]
+    public string Password { get; set; } = "";
+
+    [Required(ErrorMessage = "Bevestig je wachtwoord.")]
+    [DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = "Wachtwoorden komen niet overeen.")]
+    [Display(Name = "Bevestig wachtwoord")]
+    public string ConfirmPassword { get; set; } = "";
+
+    [Range(13, 120, ErrorMessage = "Leeftijd moet tussen 13 en 120 liggen.")]
+    public int Age { get; set; } = 20;
+
+    [Range(typeof(decimal), "1", "300")]
+    [Display(Name = "Lengte (cm)")]
+    public decimal HeightCm { get; set; } = 180;
+
+    [Range(typeof(decimal), "1", "500")]
+    [Display(Name = "Gewicht (kg)")]
+    public decimal WeightKg { get; set; } = 70;
+
+    [Range(typeof(decimal), "1", "500")]
+    [Display(Name = "Doelgewicht (kg)")]
+    public decimal TargetWeightKg { get; set; } = 80;
+
+    [Required]
+    [StringLength(32)]
+    public string Goal { get; set; } = "bulk";
+
+    [Required]
+    [StringLength(32)]
+    [Display(Name = "Goal phase")]
+    public string GoalPhase { get; set; } = "bulk";
+
+    [Required]
+    [StringLength(16)]
+    public string Sex { get; set; } = "Man";
+
+    [Range(0, 14)]
+    [Display(Name = "Trainingen per week")]
+    public int TrainingFrequencyPerWeek { get; set; } = 3;
+
+    [Range(typeof(decimal), "1.0", "3.0")]
+    [Display(Name = "Activity multiplier")]
+    public decimal ActivityMultiplier { get; set; } = 1.55m;
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Repositories/IMealRepository.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+
+namespace BulkBuddy.Business.Repositories;
+
+// Contract voor meal-data die op het dashboard getoond wordt.
+public interface IMealRepository
+{
+    Task<int> GetTotalCaloriesForTodayAsync(int userId);
+    Task<int> GetMealCountForTodayAsync(int userId);
+    Task<List<MealEntryViewModel>> GetMealsForTodayAsync(int userId);
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Repositories/IUserRepository.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.Domain;
+using BulkBuddy.Business.Models.ViewModels;
+
+namespace BulkBuddy.Business.Repositories;
+
+// Contract voor user-databaseacties.
+public interface IUserRepository
+{
+    Task<User?> GetFirstUserAsync();
+    Task<User?> GetByIdAsync(int id);
+    Task<User?> GetByUsernameAsync(string username);
+    Task<User?> GetByEmailAsync(string email);
+    Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail);
+    Task<int> CreateAsync(RegisterViewModel model, string passwordHash, string passwordSalt);
+    Task UpdateProfileAsync(int userId, EditProfileViewModel model);
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/AuthenticationService.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.Domain;
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+
+namespace BulkBuddy.Business.Services;
+
+// Verwerkt login- en registratieflow.
+public class AuthenticationService
+{
+    private readonly IUserRepository _userRepository;
+    private readonly PasswordService _passwordService;
+
+    public AuthenticationService(IUserRepository userRepository, PasswordService passwordService)
+    {
+        _userRepository = userRepository;
+        _passwordService = passwordService;
+    }
+
+    public async Task<User?> LoginAsync(LoginViewModel model)
+    {
+        var user = await _userRepository.GetByUsernameOrEmailAsync(model.UsernameOrEmail.Trim());
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        var isValidPassword = _passwordService.VerifyPassword(
+            model.Password,
+            user.PasswordHash,
+            user.PasswordSalt);
+
+        return isValidPassword ? user : null;
+    }
+
+    public async Task<(bool Success, string ErrorMessage, int? UserId)> RegisterAsync(RegisterViewModel model)
+    {
+        var existingUsername = await _userRepository.GetByUsernameAsync(model.Username.Trim());
+        if (existingUsername is not null)
+        {
+            return (false, "Deze gebruikersnaam bestaat al.", null);
+        }
+
+        var existingEmail = await _userRepository.GetByEmailAsync(model.Email.Trim());
+        if (existingEmail is not null)
+        {
+            return (false, "Dit e-mailadres bestaat al.", null);
+        }
+
+        var (hash, salt) = _passwordService.HashPassword(model.Password);
+
+        var userId = await _userRepository.CreateAsync(model, hash, salt);
+
+        return (true, "", userId);
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/CalorieCalculatorService.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.Domain;
+
+namespace BulkBuddy.Business.Services;
+
+// Bevat logica voor calorieberekeningen.
+// Door dit apart te houden blijft de dashboardservice overzichtelijk.
+public class CalorieCalculatorService
+{
+    public int CalculateDailyCalories(User user)
+    {
+        // Bescherm tegen ongeldige of lege invoer.
+        if (user.Age <= 0 || user.HeightCm <= 0 || user.WeightKg <= 0 || user.ActivityMultiplier <= 0)
+        {
+            return 0;
+        }
+
+        // Simpele Mifflin-St Jeor formule voor demonstratiedoeleinden.
+        var bmr = (10 * (double)user.WeightKg)
+                  + (6.25 * (double)user.HeightCm)
+                  - (5 * user.Age)
+                  + 5;
+
+        var tdee = bmr * (double)user.ActivityMultiplier;
+
+        // Pas het calorieadvies aan op basis van de gekozen fase.
+        return user.GoalPhase.ToLowerInvariant() switch
+        {
+            "bulk" => (int)Math.Round(tdee + 300),
+            "cut" => (int)Math.Round(tdee - 300),
+            _ => (int)Math.Round(tdee)
+        };
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/DashboardService.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+
+namespace BulkBuddy.Business.Services;
+
+// Bouwt alle data op die het dashboard nodig heeft.
+public class DashboardService
+{
+    private readonly IUserRepository _userRepository;
+    private readonly IMealRepository _mealRepository;
+    private readonly CalorieCalculatorService _calorieCalculatorService;
+
+    public DashboardService(
+        IUserRepository userRepository,
+        IMealRepository mealRepository,
+        CalorieCalculatorService calorieCalculatorService)
+    {
+        _userRepository = userRepository;
+        _mealRepository = mealRepository;
+        _calorieCalculatorService = calorieCalculatorService;
+    }
+
+    public async Task<DashboardViewModel?> GetDashboardAsync(int userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        var calorieTarget = _calorieCalculatorService.CalculateDailyCalories(user);
+        var caloriesToday = await _mealRepository.GetTotalCaloriesForTodayAsync(user.Id);
+        var mealsLoggedToday = await _mealRepository.GetMealCountForTodayAsync(user.Id);
+
+        var remainingCalories = Math.Max(0, calorieTarget - caloriesToday);
+        var progressPercent = calorieTarget <= 0
+            ? 0
+            : Math.Min(100, (int)Math.Round((double)caloriesToday / calorieTarget * 100));
+
+        return new DashboardViewModel
+        {
+            Username = user.Username,
+            WeightKg = user.WeightKg,
+            HeightCm = user.HeightCm,
+            TargetWeightKg = user.TargetWeightKg,
+            GoalPhase = user.GoalPhase,
+            CalorieTarget = calorieTarget,
+            WelcomeMessage = BuildWelcomeMessage(user.Username, user.GoalPhase),
+            GoalSummary = BuildGoalSummary(user.WeightKg, user.TargetWeightKg, user.GoalPhase),
+            CaloriesToday = caloriesToday,
+            MealsLoggedToday = mealsLoggedToday,
+            RemainingCalories = remainingCalories,
+            CalorieProgressPercent = progressPercent
+        };
+    }
+
+    private static string BuildWelcomeMessage(string username, string goalPhase)
+    {
+        return $"Welkom terug, {username}. Je dashboard staat klaar voor je {goalPhase}-fase.";
+    }
+
+    private static string BuildGoalSummary(decimal currentWeight, decimal targetWeight, string goalPhase)
+    {
+        return $"Je huidige gewicht is {currentWeight} kg en je doelgewicht is {targetWeight} kg tijdens je {goalPhase}-fase.";
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/MealsPageService.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+
+namespace BulkBuddy.Business.Services;
+
+// Bouwt de data op voor de meals overzichtspagina.
+public class MealsPageService
+{
+    private readonly IUserRepository _userRepository;
+    private readonly IMealRepository _mealRepository;
+
+    // Constructor die de benodigde repositories injecteert.
+    public MealsPageService(IUserRepository userRepository, IMealRepository mealRepository)
+    {
+        _userRepository = userRepository;
+        _mealRepository = mealRepository;
+    }
+
+    // Haal alle data op die nodig is voor de meals overzichtspagina van de gebruiker.
+    public async Task<MealsIndexViewModel?> GetMealsIndexAsync(int userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        // Haal de meals van vandaag, het totale aantal calorieën en het aantal gelogde meals op voor de gebruiker.
+        var meals = await _mealRepository.GetMealsForTodayAsync(userId);
+        var totalCalories = await _mealRepository.GetTotalCaloriesForTodayAsync(userId);
+        var mealCount = await _mealRepository.GetMealCountForTodayAsync(userId);
+
+        // Bouw en retourneer het ViewModel voor de meals overzichtspagina.
+        return new MealsIndexViewModel
+        {
+            Username = user.Username,
+            SelectedDate = DateTime.Today,
+            TotalCaloriesToday = totalCalories,
+            MealsLoggedToday = mealCount,
+            Meals = meals
+        };
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/PasswordService.cs
+----- CONTENT START -----
+
+using System.Security.Cryptography;
+
+namespace BulkBuddy.Business.Services;
+
+// Verantwoordelijk voor het veilig hashen en controleren van wachtwoorden.
+public class PasswordService
+{
+    private const int SaltSize = 16;
+    private const int HashSize = 32;
+    private const int Iterations = 100_000;
+
+    public (string Hash, string Salt) HashPassword(string password)
+    {
+        byte[] saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
+
+        byte[] hashBytes = Rfc2898DeriveBytes.Pbkdf2(
+            password,
+            saltBytes,
+            Iterations,
+            HashAlgorithmName.SHA256,
+            HashSize);
+
+        return (
+            Convert.ToBase64String(hashBytes),
+            Convert.ToBase64String(saltBytes)
+        );
+    }
+
+    public bool VerifyPassword(string password, string storedHash, string storedSalt)
+    {
+        byte[] saltBytes = Convert.FromBase64String(storedSalt);
+
+        byte[] computedHash = Rfc2898DeriveBytes.Pbkdf2(
+            password,
+            saltBytes,
+            Iterations,
+            HashAlgorithmName.SHA256,
+            HashSize);
+
+        byte[] storedHashBytes = Convert.FromBase64String(storedHash);
+
+        return CryptographicOperations.FixedTimeEquals(computedHash, storedHashBytes);
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Business
+FILE: BulkBuddy.Business/Services/ProfileService.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+
+namespace BulkBuddy.Business.Services;
+
+// Bouwt de profieldata op voor de profielpagina.
+public class ProfileService
+{
+    private readonly IUserRepository _userRepository;
+
+    public ProfileService(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    public async Task<ProfileViewModel?> GetProfileAsync(int userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        return new ProfileViewModel
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Age = user.Age,
+            HeightCm = user.HeightCm,
+            WeightKg = user.WeightKg,
+            TargetWeightKg = user.TargetWeightKg,
+            Goal = user.Goal,
+            GoalPhase = user.GoalPhase,
+            Sex = user.Sex,
+            TrainingFrequencyPerWeek = user.TrainingFrequencyPerWeek,
+            ActivityMultiplier = user.ActivityMultiplier
+        };
+    }
+    public async Task<EditProfileViewModel?> GetEditProfileAsync(int userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        return new EditProfileViewModel
+        {
+            Username = user.Username,
+            Email = user.Email,
+            Age = user.Age,
+            HeightCm = user.HeightCm,
+            WeightKg = user.WeightKg,
+            TargetWeightKg = user.TargetWeightKg,
+            Goal = user.Goal,
+            GoalPhase = user.GoalPhase,
+            Sex = user.Sex,
+            TrainingFrequencyPerWeek = user.TrainingFrequencyPerWeek,
+            ActivityMultiplier = user.ActivityMultiplier
+        };
+    }
+
+    public async Task<(bool Success, string ErrorMessage)> UpdateProfileAsync(int userId, EditProfileViewModel model)
+    {
+        var existingByUsername = await _userRepository.GetByUsernameAsync(model.Username.Trim());
+        
+        if (existingByUsername is not null && existingByUsername.Id != userId)
+        {
+            return (false, "Deze gebruikersnaam is al in gebruik.");
+        }
+
+        var existingByEmail = await _userRepository.GetByEmailAsync(model.Email.Trim());
+        if (existingByEmail is not null && existingByEmail.Id != userId)
+        {
+            return (false, "Dit e-mailadres is al in gebruik.");
+        }
+
+        await _userRepository.UpdateProfileAsync(userId, model);
+        return (true, "");
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.DataAccess
+FILE: BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj
+----- CONTENT START -----
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BulkBuddy.Business\BulkBuddy.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Dapper" Version="2.1.72" />
+    <PackageReference Include="Npgsql" Version="10.0.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.DataAccess
+FILE: BulkBuddy.DataAccess/Data/DbConnectionFactory.cs
+----- CONTENT START -----
+
+using Microsoft.Extensions.Configuration;
+using Npgsql;
+
+namespace BulkBuddy.DataAccess.Data;
+
+// Centraliseert het maken van databaseverbindingen.
+// Zo staat de connectielogica niet verspreid door het project.
+public class DbConnectionFactory
+{
+    private readonly IConfiguration _configuration;
+
+    public DbConnectionFactory(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    public NpgsqlConnection CreateConnection()
+    {
+        // Haal de connection string op uit appsettings.json.
+        var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException("Connection string 'DefaultConnection' ontbreekt.");
+        }
+
+        return new NpgsqlConnection(connectionString);
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.DataAccess
+FILE: BulkBuddy.DataAccess/Repositories/MealRepository.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+using BulkBuddy.DataAccess.Data;
+using Dapper;
+
+
+namespace BulkBuddy.DataAccess.Repositories;
+
+// Repository voor meal-gerelateerde databasequeries.
+public class MealRepository : IMealRepository
+{
+    private readonly DbConnectionFactory _dbConnectionFactory;
+
+    // Constructor die de DbConnectionFactory injecteert.
+    public MealRepository(DbConnectionFactory dbConnectionFactory)
+    {
+        _dbConnectionFactory = dbConnectionFactory;
+    }
+
+    
+    // Haal het totale aantal calorieën op dat vandaag is gelogd voor de gebruiker.
+    public async Task<int> GetTotalCaloriesForTodayAsync(int userId)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT COALESCE(SUM(total_calories), 0)
+            FROM meal_entries
+            WHERE user_id = @UserId
+              AND meal_date = CURRENT_DATE;
+            """;
+
+        return await connection.ExecuteScalarAsync<int>(sql, new { UserId = userId });
+    }
+
+    // Haal het aantal meals op dat vandaag is gelogd voor de gebruiker.
+    public async Task<int> GetMealCountForTodayAsync(int userId)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT COUNT(*)
+            FROM meal_entries
+            WHERE user_id = @UserId
+              AND meal_date = CURRENT_DATE;
+            """;
+
+        return await connection.ExecuteScalarAsync<int>(sql, new { UserId = userId });
+    }
+
+    // Haal alle meals van vandaag op voor de gebruiker, gesorteerd op meal slot en ID.
+     public async Task<List<MealEntryViewModel>> GetMealsForTodayAsync(int userId)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                name,
+                meal_slot AS MealSlot,
+                total_calories AS TotalCalories,
+                protein_grams AS ProteinGrams,
+                carbs_grams AS CarbsGrams,
+                fats_grams AS FatsGrams,
+                ingredient_summary AS IngredientSummary,
+                meal_date AS MealDate
+            FROM meal_entries
+            WHERE user_id = @UserId
+              AND meal_date = CURRENT_DATE
+            ORDER BY
+                CASE meal_slot
+                    WHEN 'breakfast' THEN 1
+                    WHEN 'lunch' THEN 2
+                    WHEN 'dinner' THEN 3
+                    WHEN 'snacks' THEN 4
+                    ELSE 5
+                END,
+                id;
+            """;
+
+        var meals = await connection.QueryAsync<MealEntryViewModel>(sql, new { UserId = userId });
+        return meals.ToList();
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.DataAccess
+FILE: BulkBuddy.DataAccess/Repositories/UserRepository.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.Domain;
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+using BulkBuddy.DataAccess.Data;
+using Dapper;
+
+namespace BulkBuddy.DataAccess.Repositories;
+
+// Repository voor user-gerelateerde databasequeries.
+public class UserRepository : IUserRepository
+{
+    private readonly DbConnectionFactory _dbConnectionFactory;
+
+    public UserRepository(DbConnectionFactory dbConnectionFactory)
+    {
+        _dbConnectionFactory = dbConnectionFactory;
+    }
+
+    public async Task<User?> GetFirstUserAsync()
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                username,
+                email,
+                password_hash AS PasswordHash,
+                password_salt AS PasswordSalt,
+                age,
+                height_cm AS HeightCm,
+                weight_kg AS WeightKg,
+                target_weight_kg AS TargetWeightKg,
+                goal AS Goal,
+                goal_phase AS GoalPhase,
+                sex,
+                training_frequency_per_week AS TrainingFrequencyPerWeek,
+                activity_multiplier AS ActivityMultiplier,
+                onboarding_completed AS OnboardingCompleted
+            FROM users
+            ORDER BY id
+            LIMIT 1;
+            """;
+
+        return await connection.QueryFirstOrDefaultAsync<User>(sql);
+    }
+
+    public async Task<User?> GetByIdAsync(int id)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                username,
+                email,
+                password_hash AS PasswordHash,
+                password_salt AS PasswordSalt,
+                age,
+                height_cm AS HeightCm,
+                weight_kg AS WeightKg,
+                target_weight_kg AS TargetWeightKg,
+                goal AS Goal,
+                goal_phase AS GoalPhase,
+                sex,
+                training_frequency_per_week AS TrainingFrequencyPerWeek,
+                activity_multiplier AS ActivityMultiplier,
+                onboarding_completed AS OnboardingCompleted
+            FROM users
+            WHERE id = @Id
+            LIMIT 1;
+            """;
+
+        return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+    }
+
+    public async Task<User?> GetByUsernameAsync(string username)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                username,
+                email,
+                password_hash AS PasswordHash,
+                password_salt AS PasswordSalt,
+                age,
+                height_cm AS HeightCm,
+                weight_kg AS WeightKg,
+                target_weight_kg AS TargetWeightKg,
+                goal AS Goal,
+                goal_phase AS GoalPhase,
+                sex,
+                training_frequency_per_week AS TrainingFrequencyPerWeek,
+                activity_multiplier AS ActivityMultiplier,
+                onboarding_completed AS OnboardingCompleted
+            FROM users
+            WHERE LOWER(username) = LOWER(@Username)
+            LIMIT 1;
+            """;
+
+        return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Username = username });
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                username,
+                email,
+                password_hash AS PasswordHash,
+                password_salt AS PasswordSalt,
+                age,
+                height_cm AS HeightCm,
+                weight_kg AS WeightKg,
+                target_weight_kg AS TargetWeightKg,
+                goal AS Goal,
+                goal_phase AS GoalPhase,
+                sex,
+                training_frequency_per_week AS TrainingFrequencyPerWeek,
+                activity_multiplier AS ActivityMultiplier,
+                onboarding_completed AS OnboardingCompleted
+            FROM users
+            WHERE LOWER(email) = LOWER(@Email)
+            LIMIT 1;
+            """;
+
+        return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+    }
+
+    public async Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            SELECT
+                id,
+                username,
+                email,
+                password_hash AS PasswordHash,
+                password_salt AS PasswordSalt,
+                age,
+                height_cm AS HeightCm,
+                weight_kg AS WeightKg,
+                target_weight_kg AS TargetWeightKg,
+                goal AS Goal,
+                goal_phase AS GoalPhase,
+                sex,
+                training_frequency_per_week AS TrainingFrequencyPerWeek,
+                activity_multiplier AS ActivityMultiplier,
+                onboarding_completed AS OnboardingCompleted
+            FROM users
+            WHERE LOWER(username) = LOWER(@Value)
+               OR LOWER(email) = LOWER(@Value)
+            LIMIT 1;
+            """;
+
+        return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Value = usernameOrEmail });
+    }
+
+    public async Task<int> CreateAsync(RegisterViewModel model, string passwordHash, string passwordSalt)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            INSERT INTO users
+            (
+                username,
+                email,
+                password_hash,
+                password_salt,
+                age,
+                height_cm,
+                weight_kg,
+                target_weight_kg,
+                goal,
+                goal_phase,
+                sex,
+                training_frequency_per_week,
+                activity_multiplier,
+                onboarding_completed
+            )
+            VALUES
+            (
+                @Username,
+                @Email,
+                @PasswordHash,
+                @PasswordSalt,
+                @Age,
+                @HeightCm,
+                @WeightKg,
+                @TargetWeightKg,
+                @Goal,
+                @GoalPhase,
+                @Sex,
+                @TrainingFrequencyPerWeek,
+                @ActivityMultiplier,
+                true
+            )
+            RETURNING id;
+            """;
+
+        return await connection.ExecuteScalarAsync<int>(sql, new
+        {
+            model.Username,
+            model.Email,
+            PasswordHash = passwordHash,
+            PasswordSalt = passwordSalt,
+            model.Age,
+            model.HeightCm,
+            model.WeightKg,
+            model.TargetWeightKg,
+            model.Goal,
+            model.GoalPhase,
+            model.Sex,
+            model.TrainingFrequencyPerWeek,
+            model.ActivityMultiplier
+        });
+    }
+
+    public async Task UpdateProfileAsync(int userId, EditProfileViewModel model)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            UPDATE users
+            SET
+                username = @Username,
+                email = @Email,
+                age = @Age,
+                height_cm = @HeightCm,
+                weight_kg = @WeightKg,
+                target_weight_kg = @TargetWeightKg,
+                goal = @Goal,
+                goal_phase = @GoalPhase,
+                sex = @Sex,
+                training_frequency_per_week = @TrainingFrequencyPerWeek,
+                activity_multiplier = @ActivityMultiplier,
+                updated_at = NOW()
+            WHERE id = @UserId;
+            """;
+
+        await connection.ExecuteAsync(sql, new
+        {
+            UserId = userId,
+            model.Username,
+            model.Email,
+            model.Age,
+            model.HeightCm,
+            model.WeightKg,
+            model.TargetWeightKg,
+            model.Goal,
+            model.GoalPhase,
+            model.Sex,
+            model.TrainingFrequencyPerWeek,
+            model.ActivityMultiplier
+        });
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/BulkBuddy.Web.csproj
+----- CONTENT START -----
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BulkBuddy.Business\BulkBuddy.Business.csproj" />
+    <ProjectReference Include="..\BulkBuddy.DataAccess\BulkBuddy.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="10.0.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Controllers/AccountController.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+using Npgsql; 
+
+namespace BulkBuddy.Web.Controllers;
+
+// Controller voor accountbeheer.
+public class AccountController : Controller
+{
+    private readonly AuthenticationService _authenticationService;
+
+    public AccountController(AuthenticationService authenticationService)
+    {
+        _authenticationService = authenticationService;
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        if (HttpContext.Session.GetInt32("UserId") is not null)
+        {
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        return View(new LoginViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            var user = await _authenticationService.LoginAsync(model);
+
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, "Ongeldige inloggegevens.");
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("Username", user.Username);
+
+            return RedirectToAction("Index", "Dashboard");
+        }
+        catch (NpgsqlException)
+        {
+            return View("~/Views/Shared/DatabaseUnavailable.cshtml");
+        }
+    }
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        if (HttpContext.Session.GetInt32("UserId") is not null)
+        {
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        return View(new RegisterViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(RegisterViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var result = await _authenticationService.RegisterAsync(model);
+
+        if (!result.Success || result.UserId is null)
+        {
+            ModelState.AddModelError(string.Empty, result.ErrorMessage);
+            return View(model);
+        }
+
+        HttpContext.Session.SetInt32("UserId", result.UserId.Value);
+        HttpContext.Session.SetString("Username", model.Username);
+
+        return RedirectToAction("Index", "Dashboard");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login", "Account");
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Controllers/DashboardController.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BulkBuddy.Web.Controllers;
+
+// Controller voor de dashboardpagina.
+public class DashboardController : Controller
+{
+    private readonly DashboardService _dashboardService;
+
+    public DashboardController(DashboardService dashboardService)
+    {
+        _dashboardService = dashboardService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var viewModel = await _dashboardService.GetDashboardAsync(userId.Value);
+
+        if (viewModel is null)
+        {
+            return View("Empty");
+        }
+
+        return View(viewModel);
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Controllers/HomeController.cs
+----- CONTENT START -----
+
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using BulkBuddy.Web.Models;
+
+namespace BulkBuddy.Web.Controllers;
+
+public class HomeController : Controller
+{
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Controllers/MealsController.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+using Npgsql;
+
+namespace BulkBuddy.Web.Controllers;
+
+// Controller voor de meals overzichtspagina.
+public class MealsController : Controller
+{
+    private readonly MealsPageService _mealsPageService;
+
+    public MealsController(MealsPageService mealsPageService)
+    {
+        _mealsPageService = mealsPageService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        try
+        {
+            var viewModel = await _mealsPageService.GetMealsIndexAsync(userId.Value);
+
+            if (viewModel is null)
+            {
+                return NotFound();
+            }
+
+            return View(viewModel);
+        }
+        catch (NpgsqlException)
+        {
+            return View("~/Views/Shared/DatabaseUnavailable.cshtml");
+        }
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Controllers/ProfileController.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BulkBuddy.Web.Controllers;
+
+// Controller voor de profielpagina.
+public class ProfileController : Controller
+{
+    private readonly ProfileService _profileService;
+
+    public ProfileController(ProfileService profileService)
+    {
+        _profileService = profileService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var viewModel = await _profileService.GetProfileAsync(userId.Value);
+
+        if (viewModel is null)
+        {
+            return NotFound();
+        }
+
+        return View(viewModel);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit()
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        var viewModel = await _profileService.GetEditProfileAsync(userId.Value);
+
+        if (viewModel is null)
+        {
+            return NotFound();
+        }
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(EditProfileViewModel model)
+    {
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var result = await _profileService.UpdateProfileAsync(userId.Value, model);
+
+        if (!result.Success)
+        {
+            ModelState.AddModelError(string.Empty, result.ErrorMessage);
+            return View(model);
+        }
+
+        HttpContext.Session.SetString("Username", model.Username);
+
+        return RedirectToAction("Index");
+    }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Models/ErrorViewModel.cs
+----- CONTENT START -----
+
+namespace BulkBuddy.Web.Models;
+
+public class ErrorViewModel
+{
+    public string? RequestId { get; set; }
+
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Program.cs
+----- CONTENT START -----
+
+using BulkBuddy.Business.Repositories;
+using BulkBuddy.Business.Services;
+using BulkBuddy.DataAccess.Data;
+using BulkBuddy.DataAccess.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Activeer MVC.
+builder.Services.AddControllersWithViews();
+
+// Nodig als opslag voor session-data.
+builder.Services.AddDistributedMemoryCache();
+
+// Session voor loginstatus.
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Infrastructure
+builder.Services.AddSingleton<DbConnectionFactory>();
+
+// Data access layer
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMealRepository, MealRepository>();
+
+// Application layer
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<CalorieCalculatorService>();
+builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<PasswordService>();
+builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<MealsPageService>();
+
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+
+app.UseStaticFiles();
+app.UseRouting();
+
+// Session middleware moet vóór MapControllerRoute staan.
+app.UseSession();
+
+// Start op login, niet dashboard.
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Account}/{action=Login}/{id?}");
+
+app.Run();
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Properties/launchSettings.json
+----- CONTENT START -----
+
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5187",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7089;http://localhost:5187",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Account/Login.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="auth-shell">
+    <div class="auth-card">
+        <h1>Login</h1>
+        <p>Log in op je BulkBuddy account.</p>
+
+        <form asp-controller="Account" asp-action="Login" method="post" class="auth-form">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+            <div class="form-group">
+                <label asp-for="UsernameOrEmail"></label>
+                <input asp-for="UsernameOrEmail" class="form-input" />
+                <span asp-validation-for="UsernameOrEmail" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-input" />
+                <span asp-validation-for="Password" class="validation-error"></span>
+            </div>
+
+            <button type="submit" class="dashboard-link">Login</button>
+        </form>
+
+        <p class="auth-switch">
+            Nog geen account?
+            <a asp-controller="Account" asp-action="Register">Maak een account aan</a>
+        </p>
+    </div>
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Account/Register.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registreren";
+}
+
+<section class="auth-shell">
+    <div class="auth-card auth-card-wide">
+        <h1>Account aanmaken</h1>
+        <p>Maak een nieuw BulkBuddy account aan.</p>
+
+        <form asp-controller="Account" asp-action="Register" method="post" class="auth-form">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+            <div class="auth-grid">
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-input" />
+                    <span asp-validation-for="Username" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-input" />
+                    <span asp-validation-for="Email" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-input" />
+                    <span asp-validation-for="Password" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-input" />
+                    <span asp-validation-for="ConfirmPassword" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" class="form-input" />
+                    <span asp-validation-for="Age" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="HeightCm"></label>
+                    <input asp-for="HeightCm" class="form-input" />
+                    <span asp-validation-for="HeightCm" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="WeightKg"></label>
+                    <input asp-for="WeightKg" class="form-input" />
+                    <span asp-validation-for="WeightKg" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TargetWeightKg"></label>
+                    <input asp-for="TargetWeightKg" class="form-input" />
+                    <span asp-validation-for="TargetWeightKg" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Goal"></label>
+                    <select asp-for="Goal" class="form-input">
+                        <option value="bulk">bulk</option>
+                        <option value="cut">cut</option>
+                        <option value="maintenance">maintenance</option>
+                    </select>
+                    <span asp-validation-for="Goal" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GoalPhase"></label>
+                    <select asp-for="GoalPhase" class="form-input">
+                        <option value="bulk">bulk</option>
+                        <option value="cut">cut</option>
+                        <option value="maintenance">maintenance</option>
+                    </select>
+                    <span asp-validation-for="GoalPhase" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Sex"></label>
+                    <select asp-for="Sex" class="form-input">
+                        <option value="Man">Man</option>
+                        <option value="Vrouw">Vrouw</option>
+                    </select>
+                    <span asp-validation-for="Sex" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TrainingFrequencyPerWeek"></label>
+                    <input asp-for="TrainingFrequencyPerWeek" class="form-input" />
+                    <span asp-validation-for="TrainingFrequencyPerWeek" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ActivityMultiplier"></label>
+                    <input asp-for="ActivityMultiplier" class="form-input" />
+                    <span asp-validation-for="ActivityMultiplier" class="validation-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="dashboard-link">Account aanmaken</button>
+        </form>
+
+        <p class="auth-switch">
+            Al een account?
+            <a asp-controller="Account" asp-action="Login">Ga naar login</a>
+        </p>
+    </div>
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Dashboard/Empty.cshtml
+----- CONTENT START -----
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Dashboard</h1>
+<p>Er is nog geen gebruiker gevonden in de database.</p>
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Dashboard/Index.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Dashboard</h1>
+        <p class="hero-text">@Model.WelcomeMessage</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Profiel</h2>
+        <p><strong>Gebruikersnaam:</strong> @Model.Username</p>
+        <p><strong>Lengte:</strong> @Model.HeightCm cm</p>
+        <p><strong>Gewicht:</strong> @Model.WeightKg kg</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Doel</h2>
+        <p><strong>Fase:</strong> @Model.GoalPhase</p>
+        <p><strong>Doelgewicht:</strong> @Model.TargetWeightKg kg</p>
+        <p>@Model.GoalSummary</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Voeding</h2>
+        <p><strong>Dagelijks calorie target:</strong></p>
+        <div class="big-number">@Model.CalorieTarget kcal</div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Vandaag</h2>
+        <p><strong>Gelogde meals:</strong> @Model.MealsLoggedToday</p>
+        <p><strong>Totaal gegeten:</strong> @Model.CaloriesToday kcal</p>
+        <p><strong>Dagdoel:</strong> @Model.CalorieTarget kcal</p>
+        <p><strong>Nog te gaan:</strong> @Model.RemainingCalories kcal</p>
+
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:@Model.CalorieProgressPercent%;"></div>
+            </div>
+            <p class="progress-text">@Model.CalorieProgressPercent% van je calorie target bereikt</p>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Snelle acties</h2>
+        <div class="action-list">
+            <a asp-controller="Dashboard" asp-action="Index" class="dashboard-link">Dashboard verversen</a>
+            <a asp-controller="Meals" asp-action="Index" class="dashboard-link">Ga naar Meals</a>
+        </div>
+    </article>
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Home/Index.cshtml
+----- CONTENT START -----
+
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Home/Privacy.cshtml
+----- CONTENT START -----
+
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Meals/Index.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.MealsIndexViewModel
+
+@{
+    ViewData["Title"] = "Meals";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Meals</h1>
+        <p class="hero-text">Overzicht van jouw maaltijden van vandaag.</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Vandaag</h2>
+        <p><strong>Gebruiker:</strong> @Model.Username</p>
+        <p><strong>Datum:</strong> @Model.SelectedDate.ToString("dd-MM-yyyy")</p>
+        <p><strong>Aantal meals:</strong> @Model.MealsLoggedToday</p>
+        <p><strong>Totaal kcal:</strong> @Model.TotalCaloriesToday</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Status</h2>
+        <p>Hier zie je welke maaltijden vandaag zijn gelogd.</p>
+        <p>In de volgende iteratie kan deze pagina worden uitgebreid met saved meals en handmatige invoer.</p>
+    </article>
+</section>
+
+<section style="margin-top: 24px;">
+    <article class="dashboard-card">
+        <h2>Meals van vandaag</h2>
+
+        @if (!Model.Meals.Any())
+        {
+            <p>Er zijn vandaag nog geen meals gelogd.</p>
+        }
+        else
+        {
+            <div class="action-list">
+                @foreach (var meal in Model.Meals)
+                {
+                    <div class="dashboard-card" style="margin-top: 12px;">
+                        <p><strong>Naam:</strong> @meal.Name</p>
+                        <p><strong>Moment:</strong> @meal.MealSlot</p>
+                        <p><strong>Kcal:</strong> @meal.TotalCalories</p>
+                        <p><strong>Macro's:</strong> P @meal.ProteinGrams / C @meal.CarbsGrams / F @meal.FatsGrams</p>
+                        <p><strong>Samenvatting:</strong> @meal.IngredientSummary</p>
+                    </div>
+                }
+            </div>
+        }
+    </article>
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Profile/Edit.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile aanpassen";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Profiel aanpassen</h1>
+        <p class="hero-text">Werk hier jouw account- en doelgegevens bij.</p>
+    </div>
+</section>
+
+<section class="dashboard-card">
+    <form asp-controller="Profile" asp-action="Edit" method="post" class="auth-form">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+        <div class="auth-grid">
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-input" />
+                <span asp-validation-for="Username" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-input" />
+                <span asp-validation-for="Email" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Age"></label>
+                <input asp-for="Age" class="form-input" />
+                <span asp-validation-for="Age" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HeightCm"></label>
+                <input asp-for="HeightCm" class="form-input" />
+                <span asp-validation-for="HeightCm" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="WeightKg"></label>
+                <input asp-for="WeightKg" class="form-input" />
+                <span asp-validation-for="WeightKg" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TargetWeightKg"></label>
+                <input asp-for="TargetWeightKg" class="form-input" />
+                <span asp-validation-for="TargetWeightKg" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Goal"></label>
+                <select asp-for="Goal" class="form-input">
+                    <option value="bulk">bulk</option>
+                    <option value="cut">cut</option>
+                    <option value="maintenance">maintenance</option>
+                </select>
+                <span asp-validation-for="Goal" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GoalPhase"></label>
+                <select asp-for="GoalPhase" class="form-input">
+                    <option value="bulk">bulk</option>
+                    <option value="cut">cut</option>
+                    <option value="maintenance">maintenance</option>
+                </select>
+                <span asp-validation-for="GoalPhase" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sex"></label>
+                <select asp-for="Sex" class="form-input">
+                    <option value="Man">Man</option>
+                    <option value="Vrouw">Vrouw</option>
+                </select>
+                <span asp-validation-for="Sex" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TrainingFrequencyPerWeek"></label>
+                <input asp-for="TrainingFrequencyPerWeek" class="form-input" />
+                <span asp-validation-for="TrainingFrequencyPerWeek" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ActivityMultiplier"></label>
+                <input asp-for="ActivityMultiplier" class="form-input" />
+                <span asp-validation-for="ActivityMultiplier" class="validation-error"></span>
+            </div>
+        </div>
+
+        <div class="action-list" style="margin-top: 20px;">
+            <button type="submit" class="dashboard-link">Opslaan</button>
+            <a asp-controller="Profile" asp-action="Index" class="dashboard-link">Annuleren</a>
+        </div>
+    </form>
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Profile/Index.cshtml
+----- CONTENT START -----
+
+@model BulkBuddy.Business.Models.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Profile</h1>
+        <p class="hero-text">Hier zie je jouw account- en doelgegevens.</p>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Account</h2>
+        <p><strong>Gebruikersnaam:</strong> @Model.Username</p>
+        <p><strong>E-mail:</strong> @Model.Email</p>
+        <p><strong>Leeftijd:</strong> @Model.Age</p>
+        <p><strong>Geslacht:</strong> @Model.Sex</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Lichaamsgegevens</h2>
+        <p><strong>Lengte:</strong> @Model.HeightCm cm</p>
+        <p><strong>Gewicht:</strong> @Model.WeightKg kg</p>
+        <p><strong>Doelgewicht:</strong> @Model.TargetWeightKg kg</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Doelen</h2>
+        <p><strong>Goal:</strong> @Model.Goal</p>
+        <p><strong>Goal phase:</strong> @Model.GoalPhase</p>
+        <p><strong>Trainingen per week:</strong> @Model.TrainingFrequencyPerWeek</p>
+        <p><strong>Activity multiplier:</strong> @Model.ActivityMultiplier</p>
+    </article>
+
+
+    <article class="dashboard-card">
+        <h2>Acties</h2>
+        <div class="action-list">
+            <a asp-controller="Profile" asp-action="Edit" class="dashboard-link">Profiel aanpassen</a>
+        </div>
+    </article>
+
+</section>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Shared/DatabaseUnavailable.cshtml
+----- CONTENT START -----
+
+@{
+    ViewData["Title"] = "Database niet beschikbaar";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Database niet beschikbaar</h1>
+        <p class="hero-text">De applicatie kan op dit moment geen verbinding maken met de database.</p>
+    </div>
+</section>
+
+<section class="dashboard-card">
+    <p>Controleer of Docker en PostgreSQL actief zijn en probeer het daarna opnieuw.</p>
+
+    <div class="action-list" style="margin-top:20px;">
+        <a asp-controller="Account" asp-action="Login" class="dashboard-link">Terug naar login</a>
+    </div>
+</section>
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Shared/Error.cshtml
+----- CONTENT START -----
+
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+    It can result in displaying sensitive information from exceptions to end users.
+    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
+    and restarting the app.
+</p>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Shared/_Layout.cshtml
+----- CONTENT START -----
+
+﻿<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BulkBuddy</title>
+
+    <link rel="icon" type="image/png" href="~/img/logo.png" />
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .app-shell {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 24px 18px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-brand {
+            margin-bottom: 28px;
+        }
+
+        .sidebar-brand h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+
+        .sidebar-brand p {
+            margin: 8px 0 0 0;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #1f2937;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .content-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .dashboard-hero {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .dashboard-hero h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+        }
+
+        .hero-text {
+            margin: 0;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-card-highlight {
+            border-left: 6px solid #2563eb;
+        }
+
+        .dashboard-card h2 {
+            margin-top: 0;
+            margin-bottom: 14px;
+            font-size: 1.3rem;
+        }
+
+        .dashboard-card p {
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+
+        .big-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            margin-top: 10px;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .dashboard-link {
+            display: inline-block;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            width: fit-content;
+        }
+
+        .dashboard-link:hover {
+            background: #1d4ed8;
+        }
+
+        .progress-wrapper {
+            margin-top: 18px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 14px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #374151;
+        }
+
+        @@media (max-width: 900px) {
+            .app-shell {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .main-content {
+                padding: 24px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Login- en registratiepagina's */
+        .auth-shell {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            background: white;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .auth-card-wide {
+            max-width: 900px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .auth-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-input {
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .validation-error {
+            color: #dc2626;
+            font-size: 0.95rem;
+        }
+
+        .auth-switch {
+            margin-top: 18px;
+            color: #374151;
+        }
+
+        .auth-switch a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var isAccountPage = currentController == "Account";
+    }
+
+    @if (isAccountPage)
+    {
+        <div class="auth-page-wrapper">
+            @RenderBody()
+        </div>
+    }
+    else
+    {
+        <div class="app-shell">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <h2>BulkBuddy</h2>
+                    <p>Smart bulking dashboard</p>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a asp-controller="Dashboard"
+                       asp-action="Index"
+                       class="nav-link @(currentController == "Dashboard" ? "active" : "")">
+                        Dashboard
+                    </a>
+
+                    <a asp-controller="Meals"
+                       asp-action="Index"
+                       class="nav-link @(currentController == "Meals" ? "active" : "")">
+                        Meals
+                    </a>
+
+                    <a href="#" class="nav-link">Training</a>
+                    <a href="#" class="nav-link">Progress</a>
+
+                    <a asp-controller="Profile"
+                       asp-action="Index"
+                       class="nav-link @(currentController == "Profile" ? "active" : "")">
+                        Profile
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Shared/_Layout.cshtml.css
+----- CONTENT START -----
+
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a {
+  color: #0077cc;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/Shared/_ValidationScriptsPartial.cshtml
+----- CONTENT START -----
+
+﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/_ViewImports.cshtml
+----- CONTENT START -----
+
+﻿@using BulkBuddy.Web
+@using BulkBuddy.Web.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/Views/_ViewStart.cshtml
+----- CONTENT START -----
+
+﻿@{
+    Layout = "_Layout";
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/appsettings.Development.json
+----- CONTENT START -----
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/appsettings.json
+----- CONTENT START -----
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection":  "Host=localhost;Port=5434;Database=bulkbuddy;Username=bulkbuddy;Password=bulkbuddy"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/wwwroot/css/site.css
+----- CONTENT START -----
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+/* Layout voor login- en registratiepagina's zonder sidebar */
+.auth-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+----- CONTENT END -----
+
+ROOT: BulkBuddy.Web
+FILE: BulkBuddy.Web/wwwroot/js/site.js
+----- CONTENT START -----
+
+﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// for details on configuring this project to bundle and minify static web assets.
+
+// Write your JavaScript code.
+
+----- CONTENT END -----
+
