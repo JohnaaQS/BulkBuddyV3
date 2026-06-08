@@ -1,0 +1,39 @@
+flowchart TD
+
+    subgraph WEB["BulkBuddy.Web — Presentation Layer"]
+        A[AccountController]
+        B[DashboardController]
+        C[MealsController]
+        D[ProfileController]
+    end
+
+    subgraph BUSINESS["BulkBuddy.Business — Business Layer"]
+        E[AuthenticationService]
+        F[DashboardService]
+        G[MealsPageService]
+        H[ProfileService]
+        I[MealTemplateService]
+        J[PasswordService]
+        K[CalorieCalculatorService]
+        L([«interface» IUserRepository])
+        M([«interface» IMealRepository])
+        N([«interface» IMealTemplateRepository])
+    end
+
+    subgraph DATA["BulkBuddy.DataAccess — Data Access Layer"]
+        O[UserRepository]
+        P[MealRepository]
+        Q[MealTemplateRepository]
+        R[(PostgreSQL)]
+    end
+
+    WEB -->|"injecteert services"| BUSINESS
+    BUSINESS -->|"implementeert interfaces"| DATA
+
+    L -.->|"geïmplementeerd door"| O
+    M -.->|"geïmplementeerd door"| P
+    N -.->|"geïmplementeerd door"| Q
+
+    O --> R
+    P --> R
+    Q --> R

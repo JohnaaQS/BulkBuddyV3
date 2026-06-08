@@ -1,0 +1,139 @@
+@{
+
+    ViewData["Title"] = "Add Meal";
+
+}
+
+<section class="dashboard-hero">
+
+    <div>
+
+        <h1>Add Meal</h1>
+
+        <p class="hero-text">Voeg een maaltijd toe aan je dagoverzicht.</p>
+
+    </div>
+
+</section>
+
+<section class="dashboard-grid">
+
+    <article class="dashboard-card dashboard-card-highlight">
+
+        <h2>Meal details</h2>
+
+        <form class="auth-form">
+
+            <div class="form-group">
+
+                <label for="mealName">Meal name</label>
+
+                <input id="mealName" class="form-input" type="text" placeholder="Bijv. Chicken rice bowl" />
+
+            </div>
+
+            <div class="auth-grid">
+
+                <div class="form-group">
+
+                    <label for="mealSlot">Meal slot</label>
+
+                    <select id="mealSlot" class="form-input">
+
+                        <option>Breakfast</option>
+
+                        <option>Lunch</option>
+
+                        <option>Dinner</option>
+
+                        <option>Snacks</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="mealDate">Date</label>
+
+                    <input id="mealDate" class="form-input" type="date" />
+
+                </div>
+
+            </div>
+
+            <div class="auth-grid">
+
+                <div class="form-group">
+
+                    <label for="calories">Calories</label>
+
+                    <input id="calories" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="protein">Protein</label>
+
+                    <input id="protein" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="carbs">Carbs</label>
+
+                    <input id="carbs" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="fats">Fats</label>
+
+                    <input id="fats" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="summary">Ingredient summary</label>
+
+                <textarea id="summary" class="form-input" rows="5" placeholder="Bijv. Chicken breast, jasmine rice, broccoli, olive oil"></textarea>
+
+            </div>
+
+            <div class="action-list">
+
+                <button type="submit" class="dashboard-link">Save Meal</button>
+
+                <a asp-controller="Meals" asp-action="Index" class="dashboard-link">Cancel</a>
+
+            </div>
+
+        </form>
+
+    </article>
+
+    <article class="dashboard-card">
+
+        <h2>Preview</h2>
+
+        <p><strong>Name:</strong> Meal name preview</p>
+
+        <p><strong>Slot:</strong> Selected slot</p>
+
+        <p><strong>Date:</strong> Selected date</p>
+
+        <p><strong>Calories:</strong> 0</p>
+
+        <p><strong>Macro's:</strong> P 0 / C 0 / F 0</p>
+
+        <p><strong>Summary:</strong> Ingredient summary appears here.</p>
+
+    </article>
+
+</section>

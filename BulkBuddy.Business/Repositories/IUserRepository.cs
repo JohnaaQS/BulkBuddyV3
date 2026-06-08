@@ -14,3 +14,4 @@ public interface IUserRepository
     Task<int> CreateAsync(RegisterViewModel model, string passwordHash, string passwordSalt);
     Task UpdateProfileAsync(int userId, EditProfileViewModel model);
 }
+ 

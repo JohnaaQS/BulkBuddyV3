@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Saved Meals";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Saved Meals</h1>
+        <p class="hero-text">Kies een opgeslagen maaltijdtemplate of beheer je vaste maaltijden.</p>
+    </div>
+</section>
+
+<section class="dashboard-card" style="margin-bottom: 24px;">
+    <div class="auth-grid">
+        <div class="form-group">
+            <label for="search">Zoeken</label>
+            <input id="search" class="form-input" type="text" placeholder="Zoek een saved meal..." />
+        </div>
+
+        <div class="form-group">
+            <label for="mealSlot">Meal slot</label>
+            <select id="mealSlot" class="form-input">
+                <option>Alle slots</option>
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Dinner</option>
+                <option>Snacks</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Breakfast Shake</h2>
+        <p><strong>Slot:</strong> Breakfast</p>
+        <p><strong>Kcal:</strong> 712</p>
+        <p><strong>Macro's:</strong> P 48 / C 86 / F 21</p>
+        <p><strong>Ingrediënten:</strong> Whey isolate, oats, banana, peanut butter, semi-skimmed milk</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Chicken Rice Bowl</h2>
+        <p><strong>Slot:</strong> Lunch</p>
+        <p><strong>Kcal:</strong> 763</p>
+        <p><strong>Macro's:</strong> P 66 / C 82 / F 18</p>
+        <p><strong>Ingrediënten:</strong> Chicken breast, jasmine rice, broccoli, olive oil</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Quark Fruit Bowl</h2>
+        <p><strong>Slot:</strong> Snacks</p>
+        <p><strong>Kcal:</strong> 423</p>
+        <p><strong>Macro's:</strong> P 34 / C 58 / F 6</p>
+        <p><strong>Ingrediënten:</strong> Low-fat quark, blueberries, granola, honey</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Salmon Potato Plate</h2>
+        <p><strong>Slot:</strong> Dinner</p>
+        <p><strong>Kcal:</strong> 726</p>
+        <p><strong>Macro's:</strong> P 50 / C 52 / F 35</p>
+        <p><strong>Ingrediënten:</strong> Salmon, baby potatoes, green vegetables, olive oil</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+</section>

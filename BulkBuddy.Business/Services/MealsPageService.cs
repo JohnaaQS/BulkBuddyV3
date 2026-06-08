@@ -26,10 +26,19 @@ public class MealsPageService
             return null;
         }
 
-        // Haal de meals van vandaag, het totale aantal calorieën en het aantal gelogde meals op voor de gebruiker.
-        var meals = await _mealRepository.GetMealsForTodayAsync(userId);
-        var totalCalories = await _mealRepository.GetTotalCaloriesForTodayAsync(userId);
-        var mealCount = await _mealRepository.GetMealCountForTodayAsync(userId);
+        // Drie repository-calls parallel uitvoeren i.p.v. sequentieel.
+        // Sequentieel: ~30ms + ~30ms + ~30ms = ~90ms totaal.
+        // Parallel: max(~30ms, ~30ms, ~30ms) = ~30ms totaal.
+        // Task.WhenAll wacht tot alle drie klaar zijn voor we verder gaan.
+        var mealsTask        = _mealRepository.GetMealsForTodayAsync(userId);
+        var totalCalTask     = _mealRepository.GetTotalCaloriesForTodayAsync(userId);
+        var mealCountTask    = _mealRepository.GetMealCountForTodayAsync(userId);
+
+        await Task.WhenAll(mealsTask, totalCalTask, mealCountTask);
+
+        var meals         = mealsTask.Result;
+        var totalCalories = totalCalTask.Result;
+        var mealCount     = mealCountTask.Result;
 
         // Bouw en retourneer het ViewModel voor de meals overzichtspagina.
         return new MealsIndexViewModel
@@ -40,5 +49,12 @@ public class MealsPageService
             MealsLoggedToday = mealCount,
             Meals = meals
         };
+    }
+
+    // Sla een nieuwe maaltijd op voor de gebruiker.
+    // De data uit het formulier (of template) wordt als snapshot opgeslagen in meal_entries.
+    public async Task AddMealAsync(int userId, AddMealViewModel model)
+    {
+        await _mealRepository.AddMealAsync(userId, model);
     }
 }

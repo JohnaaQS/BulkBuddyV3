@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BulkBuddy.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe8db6074349711f25600c35bc735bbd7893166a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+499b0f5ca19a64461fbf4922b568368ebc96d6c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("BulkBuddy.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BulkBuddy.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

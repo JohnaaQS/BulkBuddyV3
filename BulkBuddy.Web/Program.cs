@@ -25,6 +25,7 @@ builder.Services.AddSingleton<DbConnectionFactory>();
 // Data access layer
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMealRepository, MealRepository>();
+builder.Services.AddScoped<IMealTemplateRepository, MealTemplateRepository>();
 
 // Application layer
 builder.Services.AddScoped<DashboardService>();
@@ -33,6 +34,7 @@ builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<MealsPageService>();
+builder.Services.AddScoped<MealTemplateService>();
 
 var app = builder.Build();
 
@@ -42,7 +44,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
-app.UseRouting();
+app.UseRouting(); 
 
 // Session middleware moet vóór MapControllerRoute staan.
 app.UseSession();

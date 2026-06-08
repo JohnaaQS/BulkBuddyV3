@@ -51,7 +51,8 @@ public class MealRepository : IMealRepository
     // Haal alle meals van vandaag op voor de gebruiker, gesorteerd op meal slot en ID.
      public async Task<List<MealEntryViewModel>> GetMealsForTodayAsync(int userId)
     {
-        using var connection = _dbConnectionFactory.CreateConnection();
+        using (var connection = _dbConnectionFactory.CreateConnection())
+        {
 
         const string sql = """
             SELECT
@@ -80,5 +81,53 @@ public class MealRepository : IMealRepository
 
         var meals = await connection.QueryAsync<MealEntryViewModel>(sql, new { UserId = userId });
         return meals.ToList();
+        }
+    }
+
+    // Sla een nieuwe maaltijdinvoer op — snapshot van de data op dit moment.
+    // Geen FK naar meal_templates: historische logs mogen niet veranderen bij templatewijziging.
+    public async Task AddMealAsync(int userId, AddMealViewModel model)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+            INSERT INTO meal_entries
+            (
+                user_id,
+                meal_date,
+                meal_slot,
+                name,
+                total_calories,
+                protein_grams,
+                carbs_grams,
+                fats_grams,
+                ingredient_summary
+            )
+            VALUES
+            (
+                @UserId,
+                @MealDate,
+                @MealSlot,
+                @Name,
+                @TotalCalories,
+                @ProteinGrams,
+                @CarbsGrams,
+                @FatsGrams,
+                @IngredientSummary
+            );
+            """;
+
+        await connection.ExecuteAsync(sql, new
+        {
+            UserId        = userId,
+            model.MealDate,
+            model.MealSlot,
+            model.Name,
+            model.TotalCalories,
+            model.ProteinGrams,
+            model.CarbsGrams,
+            model.FatsGrams,
+            model.IngredientSummary
+        });
     }
 }

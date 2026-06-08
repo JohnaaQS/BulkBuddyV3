@@ -1,80 +1,102 @@
-ROOT: repo-root
-FILE: BulkBuddy.slnx
------ CONTENT START -----
+BulkBuddy Code Export
+Generated at: 2026-05-18 11:50:46.873570
+Project path: /Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3
 
-<Solution>
-</Solution>
+==============================
+PROJECT STRUCTURE
+==============================
 
------ CONTENT END -----
+archi.txt
+BulkBuddy.Business/BulkBuddy.Business.csproj
+BulkBuddy.Business/Models/Domain/User.cs
+BulkBuddy.Business/Models/ViewModels/AddMealViewModel.cs
+BulkBuddy.Business/Models/ViewModels/DashboardViewModel.cs
+BulkBuddy.Business/Models/ViewModels/EditProfileViewModel.cs
+BulkBuddy.Business/Models/ViewModels/LoginViewModel.cs
+BulkBuddy.Business/Models/ViewModels/MealEntryViewModel.cs
+BulkBuddy.Business/Models/ViewModels/MealsIndexViewModel.cs
+BulkBuddy.Business/Models/ViewModels/ProfileViewModel.cs
+BulkBuddy.Business/Models/ViewModels/RegisterViewModel.cs
+BulkBuddy.Business/Models/ViewModels/SavedMealCardViewModel.cs
+BulkBuddy.Business/Models/ViewModels/SavedMealsViewModel.cs
+BulkBuddy.Business/Repositories/IMealRepository.cs
+BulkBuddy.Business/Repositories/IMealTemplateRepository.cs
+BulkBuddy.Business/Repositories/IUserRepository.cs
+BulkBuddy.Business/Services/AuthenticationService.cs
+BulkBuddy.Business/Services/CalorieCalculatorService.cs
+BulkBuddy.Business/Services/DashboardService.cs
+BulkBuddy.Business/Services/MealsPageService.cs
+BulkBuddy.Business/Services/MealTemplateService.cs
+BulkBuddy.Business/Services/PasswordService.cs
+BulkBuddy.Business/Services/ProfileService.cs
+BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj
+BulkBuddy.DataAccess/Data/DbConnectionFactory.cs
+BulkBuddy.DataAccess/Repositories/MealRepository.cs
+BulkBuddy.DataAccess/Repositories/MealTemplateRepository.cs
+BulkBuddy.DataAccess/Repositories/UserRepository.cs
+BulkBuddy.slnx
+BulkBuddy.Web/appsettings.Development.json
+BulkBuddy.Web/appsettings.json
+BulkBuddy.Web/BulkBuddy.Web.csproj
+BulkBuddy.Web/Controllers/AccountController.cs
+BulkBuddy.Web/Controllers/DashboardController.cs
+BulkBuddy.Web/Controllers/HomeController.cs
+BulkBuddy.Web/Controllers/MealsController.cs
+BulkBuddy.Web/Controllers/ProfileController.cs
+BulkBuddy.Web/Models/ErrorViewModel.cs
+BulkBuddy.Web/Program.cs
+BulkBuddy.Web/Properties/launchSettings.json
+BulkBuddy.Web/Views/_ViewImports.cshtml
+BulkBuddy.Web/Views/_ViewStart.cshtml
+BulkBuddy.Web/Views/Account/Login.cshtml
+BulkBuddy.Web/Views/Account/Register.cshtml
+BulkBuddy.Web/Views/Dashboard/Empty.cshtml
+BulkBuddy.Web/Views/Dashboard/Index.cshtml
+BulkBuddy.Web/Views/Home/Index.cshtml
+BulkBuddy.Web/Views/Home/Privacy.cshtml
+BulkBuddy.Web/Views/Meals/Add.cshtml
+BulkBuddy.Web/Views/Meals/Index.cshtml
+BulkBuddy.Web/Views/Meals/Saved.cshtml
+BulkBuddy.Web/Views/Profile/Edit.cshtml
+BulkBuddy.Web/Views/Profile/Index.cshtml
+BulkBuddy.Web/Views/Progress/Index.cshtml
+BulkBuddy.Web/Views/Shared/_Layout.cshtml
+BulkBuddy.Web/Views/Shared/_ValidationScriptsPartial.cshtml
+BulkBuddy.Web/Views/Shared/DatabaseUnavailable.cshtml
+BulkBuddy.Web/Views/Shared/Error.cshtml
+BulkBuddy.Web/Views/Training/Add.cshtml
+BulkBuddy.Web/Views/Training/Details.cshtml
+BulkBuddy.Web/Views/Training/Index.cshtml
+BulkBuddyV3.slnx
+meals.sql
 
-ROOT: repo-root
-FILE: BulkBuddyV3.slnx
------ CONTENT START -----
 
-<Solution>
-</Solution>
+==============================
+CODE FILES
+==============================
 
------ CONTENT END -----
 
-ROOT: repo-root
-FILE: meals.sql
------ CONTENT START -----
+==================================================
+FILE: archi.txt
+==================================================
 
-INSERT INTO meal_entries
-(
-    user_id,
-    entry_date,
-    meal_date,
-    meal_slot,
-    name,
-    total_calories,
-    protein_grams,
-    carbs_grams,
-    fats_grams,
-    ingredient_summary
-)
-VALUES
-(
-    3,
-    CURRENT_DATE,
-    CURRENT_DATE,
-    'breakfast',
-    'Breakfast shake',
-    720,
-    45,
-    78,
-    18,
-    'Whey, oats, banana, peanut butter'
-),
-(
-    3,
-    CURRENT_DATE,
-    CURRENT_DATE,
-    'lunch',
-    'Chicken rice bowl',
-    890,
-    62,
-    95,
-    22,
-    'Chicken, rice, broccoli, sauce'
-),
-(
-    3,
-    CURRENT_DATE,
-    CURRENT_DATE,
-    'dinner',
-    'Salmon potato plate',
-    810,
-    48,
-    70,
-    30,
-    'Salmon, potatoes, vegetables'
-);
------ CONTENT END -----
+Presentation Layer
+- Controllers
+- Views
+- ViewModels
 
-ROOT: BulkBuddy.Business
+Business Layer
+- Services
+- Domain model (User)
+
+Data Access Layer
+- Repositories
+- DbConnectionFactory
+- PostgreSQL
+
+==================================================
 FILE: BulkBuddy.Business/BulkBuddy.Business.csproj
------ CONTENT START -----
+==================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
@@ -86,11 +108,10 @@ FILE: BulkBuddy.Business/BulkBuddy.Business.csproj
 
 </Project>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/Domain/User.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Business.Models.Domain;
 
@@ -122,11 +143,38 @@ public class User
     public bool OnboardingCompleted { get; set; }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
+FILE: BulkBuddy.Business/Models/ViewModels/AddMealViewModel.cs
+==================================================
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+public class AddMealViewModel
+
+{
+
+    public string Name { get; set; } = "";
+
+    public string MealSlot { get; set; } = "Breakfast";
+
+    public DateTime MealDate { get; set; } = DateTime.Today;
+
+    public int TotalCalories { get; set; }
+
+    public int ProteinGrams { get; set; }
+
+    public int CarbsGrams { get; set; }
+
+    public int FatsGrams { get; set; }
+
+    public string IngredientSummary { get; set; } = "";
+
+}
+
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/DashboardViewModel.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Business.Models.ViewModels;
 
@@ -152,11 +200,10 @@ public class DashboardViewModel
     public int CalorieProgressPercent { get; set; }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/EditProfileViewModel.cs
------ CONTENT START -----
+==================================================
 
 using System.ComponentModel.DataAnnotations;
 
@@ -211,11 +258,10 @@ public class EditProfileViewModel
     public decimal ActivityMultiplier { get; set; }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/LoginViewModel.cs
------ CONTENT START -----
+==================================================
 
 using System.ComponentModel.DataAnnotations;
 
@@ -233,11 +279,10 @@ public class LoginViewModel
     public string Password { get; set; } = "";
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/MealEntryViewModel.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Business.Models.ViewModels;
 
@@ -255,11 +300,10 @@ public class MealEntryViewModel
     public DateOnly MealDate { get; set; }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/MealsIndexViewModel.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Business.Models.ViewModels;
 
@@ -274,11 +318,10 @@ public class MealsIndexViewModel
     public List<MealEntryViewModel> Meals { get; set; } = new();
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/ProfileViewModel.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Business.Models.ViewModels;
 
@@ -298,11 +341,10 @@ public class ProfileViewModel
     public decimal ActivityMultiplier { get; set; }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Models/ViewModels/RegisterViewModel.cs
------ CONTENT START -----
+==================================================
 
 using System.ComponentModel.DataAnnotations;
 
@@ -368,11 +410,42 @@ public class RegisterViewModel
     public decimal ActivityMultiplier { get; set; } = 1.55m;
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
+FILE: BulkBuddy.Business/Models/ViewModels/SavedMealCardViewModel.cs
+==================================================
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+public class SavedMealCardViewModel
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+    public string MealSlot { get; set; } = "breakfast";
+    public bool IsSystem { get; set; }
+    public int TotalCalories { get; set; }
+    public int ProteinGrams { get; set; }
+    public int CarbsGrams { get; set; }
+    public int FatsGrams { get; set; }
+    public string IngredientSummary { get; set; } = "";
+}
+
+
+==================================================
+FILE: BulkBuddy.Business/Models/ViewModels/SavedMealsViewModel.cs
+==================================================
+
+namespace BulkBuddy.Business.Models.ViewModels;
+
+public class SavedMealsViewModel
+{
+    public List<SavedMealCardViewModel> Meals { get; set; } = new();
+}
+
+
+==================================================
 FILE: BulkBuddy.Business/Repositories/IMealRepository.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 
@@ -386,11 +459,24 @@ public interface IMealRepository
     Task<List<MealEntryViewModel>> GetMealsForTodayAsync(int userId);
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
+FILE: BulkBuddy.Business/Repositories/IMealTemplateRepository.cs
+==================================================
+
+using BulkBuddy.Business.Models.ViewModels;
+
+namespace BulkBuddy.Business.Repositories;
+
+public interface IMealTemplateRepository
+{
+    Task<List<SavedMealCardViewModel>> GetSavedMealsAsync();
+}
+
+
+==================================================
 FILE: BulkBuddy.Business/Repositories/IUserRepository.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.Domain;
 using BulkBuddy.Business.Models.ViewModels;
@@ -409,11 +495,10 @@ public interface IUserRepository
     Task UpdateProfileAsync(int userId, EditProfileViewModel model);
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Services/AuthenticationService.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.Domain;
 using BulkBuddy.Business.Models.ViewModels;
@@ -472,11 +557,10 @@ public class AuthenticationService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Services/CalorieCalculatorService.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.Domain;
 
@@ -512,11 +596,10 @@ public class CalorieCalculatorService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Services/DashboardService.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
@@ -586,11 +669,10 @@ public class DashboardService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Services/MealsPageService.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
@@ -637,11 +719,52 @@ public class MealsPageService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
+FILE: BulkBuddy.Business/Services/MealTemplateService.cs
+==================================================
+
+using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Repositories;
+
+namespace BulkBuddy.Business.Services;
+
+public class MealTemplateService
+
+{
+
+    private readonly IMealTemplateRepository _mealTemplateRepository;
+
+    public MealTemplateService(IMealTemplateRepository mealTemplateRepository)
+
+    {
+
+        _mealTemplateRepository = mealTemplateRepository;
+
+    }
+
+    public async Task<SavedMealsViewModel> GetSavedMealsAsync()
+
+    {
+
+        var meals = await _mealTemplateRepository.GetSavedMealsAsync();
+
+        return new SavedMealsViewModel
+
+        {
+
+            Meals = meals
+
+        };
+
+    }
+
+}
+
+
+==================================================
 FILE: BulkBuddy.Business/Services/PasswordService.cs
------ CONTENT START -----
+==================================================
 
 using System.Security.Cryptography;
 
@@ -688,11 +811,10 @@ public class PasswordService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Business
+==================================================
 FILE: BulkBuddy.Business/Services/ProfileService.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
@@ -778,11 +900,10 @@ public class ProfileService
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.DataAccess
+==================================================
 FILE: BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj
------ CONTENT START -----
+==================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
@@ -804,11 +925,10 @@ FILE: BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj
 
 </Project>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.DataAccess
+==================================================
 FILE: BulkBuddy.DataAccess/Data/DbConnectionFactory.cs
------ CONTENT START -----
+==================================================
 
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -840,11 +960,10 @@ public class DbConnectionFactory
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.DataAccess
+==================================================
 FILE: BulkBuddy.DataAccess/Repositories/MealRepository.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
@@ -931,11 +1050,102 @@ public class MealRepository : IMealRepository
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.DataAccess
+==================================================
+FILE: BulkBuddy.DataAccess/Repositories/MealTemplateRepository.cs
+==================================================
+
+using BulkBuddy.Business.Models.ViewModels;
+
+using BulkBuddy.Business.Repositories;
+
+using BulkBuddy.DataAccess.Data;
+
+using Dapper;
+
+namespace BulkBuddy.DataAccess.Repositories;
+
+public class MealTemplateRepository : IMealTemplateRepository
+
+{
+
+    private readonly DbConnectionFactory _dbConnectionFactory;
+
+    public MealTemplateRepository(DbConnectionFactory dbConnectionFactory)
+
+    {
+
+        _dbConnectionFactory = dbConnectionFactory;
+
+    }
+
+    public async Task<List<SavedMealCardViewModel>> GetSavedMealsAsync()
+
+    {
+
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        const string sql = """
+
+            SELECT
+
+                mt.id,
+
+                mt.name,
+
+                mt.default_slot AS MealSlot,
+
+                mt.is_system AS IsSystem,
+
+                COALESCE(SUM(mti.calories), 0) AS TotalCalories,
+
+                COALESCE(SUM(mti.protein_grams), 0) AS ProteinGrams,
+
+                COALESCE(SUM(mti.carbs_grams), 0) AS CarbsGrams,
+
+                COALESCE(SUM(mti.fats_grams), 0) AS FatsGrams,
+
+                STRING_AGG(mti.name, ', ' ORDER BY mti.sort_order) AS IngredientSummary
+
+            FROM meal_templates mt
+
+            LEFT JOIN meal_template_ingredients mti
+
+                ON mt.id = mti.template_id
+
+            GROUP BY mt.id, mt.name, mt.default_slot, mt.is_system
+
+            ORDER BY
+
+                CASE mt.default_slot
+
+                    WHEN 'Breakfast' THEN 1
+
+                    WHEN 'Lunch' THEN 2
+
+                    WHEN 'Dinner' THEN 3
+
+                    WHEN 'Snacks' THEN 4
+
+                    ELSE 5
+
+                END,
+
+                mt.name;
+
+            """;
+
+        var meals = await connection.QueryAsync<SavedMealCardViewModel>(sql);
+
+        return meals.ToList();
+
+    }
+
+}
+
+==================================================
 FILE: BulkBuddy.DataAccess/Repositories/UserRepository.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.Domain;
 using BulkBuddy.Business.Models.ViewModels;
@@ -1201,11 +1411,52 @@ public class UserRepository : IUserRepository
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
+FILE: BulkBuddy.slnx
+==================================================
+
+<Solution>
+  <Project Path="BulkBuddy.Business/BulkBuddy.Business.csproj" />
+  <Project Path="BulkBuddy.DataAccess/BulkBuddy.DataAccess.csproj" />
+  <Project Path="BulkBuddy.Web/BulkBuddy.Web.csproj" />
+</Solution>
+
+
+==================================================
+FILE: BulkBuddy.Web/appsettings.Development.json
+==================================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+
+==================================================
+FILE: BulkBuddy.Web/appsettings.json
+==================================================
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection":  "Host=localhost;Port=5434;Database=bulkbuddy;Username=bulkbuddy;Password=bulkbuddy"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+==================================================
 FILE: BulkBuddy.Web/BulkBuddy.Web.csproj
------ CONTENT START -----
+==================================================
 
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
@@ -1226,11 +1477,10 @@ FILE: BulkBuddy.Web/BulkBuddy.Web.csproj
 
 </Project>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Controllers/AccountController.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Services;
@@ -1333,11 +1583,10 @@ public class AccountController : Controller
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Controllers/DashboardController.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -1374,11 +1623,10 @@ public class DashboardController : Controller
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Controllers/HomeController.cs
------ CONTENT START -----
+==================================================
 
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -1405,14 +1653,14 @@ public class HomeController : Controller
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Controllers/MealsController.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Services;
 using Microsoft.AspNetCore.Mvc;
+using BulkBuddy.Business.Models.ViewModels;
 using Npgsql;
 
 namespace BulkBuddy.Web.Controllers;
@@ -1421,10 +1669,12 @@ namespace BulkBuddy.Web.Controllers;
 public class MealsController : Controller
 {
     private readonly MealsPageService _mealsPageService;
+    private readonly MealTemplateService _mealTemplateService;
 
-    public MealsController(MealsPageService mealsPageService)
+    public MealsController(MealsPageService mealsPageService, MealTemplateService mealTemplateService)
     {
         _mealsPageService = mealsPageService;
+        _mealTemplateService = mealTemplateService;
     }
 
     [HttpGet]
@@ -1453,13 +1703,44 @@ public class MealsController : Controller
             return View("~/Views/Shared/DatabaseUnavailable.cshtml");
         }
     }
+    [HttpGet]
+    public async Task<IActionResult> Saved()
+    {
+        var viewModel = await _mealTemplateService.GetSavedMealsAsync();
+        return View(viewModel);
+    }
+
+    [HttpGet]
+    public IActionResult Add()
+
+    {
+
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (userId is null)
+
+        {
+
+            return RedirectToAction("Login", "Account");
+
+        }
+
+        var viewModel = new AddMealViewModel
+
+        {
+
+            MealDate = DateTime.Today
+
+        };
+
+        return View(viewModel);
+
+    }
 }
 
------ CONTENT END -----
-
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Controllers/ProfileController.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Services;
@@ -1547,11 +1828,10 @@ public class ProfileController : Controller
     }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Models/ErrorViewModel.cs
------ CONTENT START -----
+==================================================
 
 namespace BulkBuddy.Web.Models;
 
@@ -1562,11 +1842,10 @@ public class ErrorViewModel
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Program.cs
------ CONTENT START -----
+==================================================
 
 using BulkBuddy.Business.Repositories;
 using BulkBuddy.Business.Services;
@@ -1595,6 +1874,7 @@ builder.Services.AddSingleton<DbConnectionFactory>();
 // Data access layer
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMealRepository, MealRepository>();
+builder.Services.AddScoped<IMealTemplateRepository, MealTemplateRepository>();
 
 // Application layer
 builder.Services.AddScoped<DashboardService>();
@@ -1603,6 +1883,7 @@ builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<MealsPageService>();
+builder.Services.AddScoped<MealTemplateService>();
 
 var app = builder.Build();
 
@@ -1624,11 +1905,10 @@ app.MapControllerRoute(
 
 app.Run();
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Properties/launchSettings.json
------ CONTENT START -----
+==================================================
 
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
@@ -1654,11 +1934,28 @@ FILE: BulkBuddy.Web/Properties/launchSettings.json
   }
 }
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
+FILE: BulkBuddy.Web/Views/_ViewImports.cshtml
+==================================================
+
+﻿@using BulkBuddy.Web
+@using BulkBuddy.Web.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+==================================================
+FILE: BulkBuddy.Web/Views/_ViewStart.cshtml
+==================================================
+
+﻿@{
+    Layout = "_Layout";
+}
+
+
+==================================================
 FILE: BulkBuddy.Web/Views/Account/Login.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.LoginViewModel
 
@@ -1698,11 +1995,10 @@ FILE: BulkBuddy.Web/Views/Account/Login.cshtml
     </div>
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Account/Register.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.RegisterViewModel
 
@@ -1821,11 +2117,10 @@ FILE: BulkBuddy.Web/Views/Account/Register.cshtml
     </div>
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Dashboard/Empty.cshtml
------ CONTENT START -----
+==================================================
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -1833,11 +2128,10 @@ FILE: BulkBuddy.Web/Views/Dashboard/Empty.cshtml
 
 <h1>Dashboard</h1>
 <p>Er is nog geen gebruiker gevonden in de database.</p>
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Dashboard/Index.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.DashboardViewModel
 
@@ -1897,11 +2191,10 @@ FILE: BulkBuddy.Web/Views/Dashboard/Index.cshtml
     </article>
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Home/Index.cshtml
------ CONTENT START -----
+==================================================
 
 ﻿@{
     ViewData["Title"] = "Home Page";
@@ -1912,11 +2205,10 @@ FILE: BulkBuddy.Web/Views/Home/Index.cshtml
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Home/Privacy.cshtml
------ CONTENT START -----
+==================================================
 
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
@@ -1925,11 +2217,154 @@ FILE: BulkBuddy.Web/Views/Home/Privacy.cshtml
 
 <p>Use this page to detail your site's privacy policy.</p>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
+FILE: BulkBuddy.Web/Views/Meals/Add.cshtml
+==================================================
+
+@{
+
+    ViewData["Title"] = "Add Meal";
+
+}
+
+<section class="dashboard-hero">
+
+    <div>
+
+        <h1>Add Meal</h1>
+
+        <p class="hero-text">Voeg een maaltijd toe aan je dagoverzicht.</p>
+
+    </div>
+
+</section>
+
+<section class="dashboard-grid">
+
+    <article class="dashboard-card dashboard-card-highlight">
+
+        <h2>Meal details</h2>
+
+        <form class="auth-form">
+
+            <div class="form-group">
+
+                <label for="mealName">Meal name</label>
+
+                <input id="mealName" class="form-input" type="text" placeholder="Bijv. Chicken rice bowl" />
+
+            </div>
+
+            <div class="auth-grid">
+
+                <div class="form-group">
+
+                    <label for="mealSlot">Meal slot</label>
+
+                    <select id="mealSlot" class="form-input">
+
+                        <option>Breakfast</option>
+
+                        <option>Lunch</option>
+
+                        <option>Dinner</option>
+
+                        <option>Snacks</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="mealDate">Date</label>
+
+                    <input id="mealDate" class="form-input" type="date" />
+
+                </div>
+
+            </div>
+
+            <div class="auth-grid">
+
+                <div class="form-group">
+
+                    <label for="calories">Calories</label>
+
+                    <input id="calories" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="protein">Protein</label>
+
+                    <input id="protein" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="carbs">Carbs</label>
+
+                    <input id="carbs" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="fats">Fats</label>
+
+                    <input id="fats" class="form-input" type="number" placeholder="0" />
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="summary">Ingredient summary</label>
+
+                <textarea id="summary" class="form-input" rows="5" placeholder="Bijv. Chicken breast, jasmine rice, broccoli, olive oil"></textarea>
+
+            </div>
+
+            <div class="action-list">
+
+                <button type="submit" class="dashboard-link">Save Meal</button>
+
+                <a asp-controller="Meals" asp-action="Index" class="dashboard-link">Cancel</a>
+
+            </div>
+
+        </form>
+
+    </article>
+
+    <article class="dashboard-card">
+
+        <h2>Preview</h2>
+
+        <p><strong>Name:</strong> Meal name preview</p>
+
+        <p><strong>Slot:</strong> Selected slot</p>
+
+        <p><strong>Date:</strong> Selected date</p>
+
+        <p><strong>Calories:</strong> 0</p>
+
+        <p><strong>Macro's:</strong> P 0 / C 0 / F 0</p>
+
+        <p><strong>Summary:</strong> Ingredient summary appears here.</p>
+
+    </article>
+
+</section>
+
+==================================================
 FILE: BulkBuddy.Web/Views/Meals/Index.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.MealsIndexViewModel
 
@@ -1941,6 +2376,13 @@ FILE: BulkBuddy.Web/Views/Meals/Index.cshtml
     <div>
         <h1>Meals</h1>
         <p class="hero-text">Overzicht van jouw maaltijden van vandaag.</p>
+    </div>
+        <div class="action-list" style="margin-top: 20px;">
+
+        <a asp-controller="Meals" asp-action="Saved" class="dashboard-link">Saved Meals</a>
+
+        <a asp-controller="Meals" asp-action="Add" class="dashboard-link">Add Meal</a>
+
     </div>
 </section>
 
@@ -1986,11 +2428,100 @@ FILE: BulkBuddy.Web/Views/Meals/Index.cshtml
     </article>
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
+FILE: BulkBuddy.Web/Views/Meals/Saved.cshtml
+==================================================
+
+@{
+    ViewData["Title"] = "Saved Meals";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Saved Meals</h1>
+        <p class="hero-text">Kies een opgeslagen maaltijdtemplate of beheer je vaste maaltijden.</p>
+    </div>
+</section>
+
+<section class="dashboard-card" style="margin-bottom: 24px;">
+    <div class="auth-grid">
+        <div class="form-group">
+            <label for="search">Zoeken</label>
+            <input id="search" class="form-input" type="text" placeholder="Zoek een saved meal..." />
+        </div>
+
+        <div class="form-group">
+            <label for="mealSlot">Meal slot</label>
+            <select id="mealSlot" class="form-input">
+                <option>Alle slots</option>
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Dinner</option>
+                <option>Snacks</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <article class="dashboard-card dashboard-card-highlight">
+        <h2>Breakfast Shake</h2>
+        <p><strong>Slot:</strong> Breakfast</p>
+        <p><strong>Kcal:</strong> 712</p>
+        <p><strong>Macro's:</strong> P 48 / C 86 / F 21</p>
+        <p><strong>Ingrediënten:</strong> Whey isolate, oats, banana, peanut butter, semi-skimmed milk</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Chicken Rice Bowl</h2>
+        <p><strong>Slot:</strong> Lunch</p>
+        <p><strong>Kcal:</strong> 763</p>
+        <p><strong>Macro's:</strong> P 66 / C 82 / F 18</p>
+        <p><strong>Ingrediënten:</strong> Chicken breast, jasmine rice, broccoli, olive oil</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Quark Fruit Bowl</h2>
+        <p><strong>Slot:</strong> Snacks</p>
+        <p><strong>Kcal:</strong> 423</p>
+        <p><strong>Macro's:</strong> P 34 / C 58 / F 6</p>
+        <p><strong>Ingrediënten:</strong> Low-fat quark, blueberries, granola, honey</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+
+    <article class="dashboard-card">
+        <h2>Salmon Potato Plate</h2>
+        <p><strong>Slot:</strong> Dinner</p>
+        <p><strong>Kcal:</strong> 726</p>
+        <p><strong>Macro's:</strong> P 50 / C 52 / F 35</p>
+        <p><strong>Ingrediënten:</strong> Salmon, baby potatoes, green vegetables, olive oil</p>
+
+        <div class="action-list">
+            <a href="#" class="dashboard-link">Add to today</a>
+            <a href="#" class="dashboard-link">View</a>
+        </div>
+    </article>
+</section>
+
+
+==================================================
 FILE: BulkBuddy.Web/Views/Profile/Edit.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.EditProfileViewModel
 
@@ -2097,11 +2628,10 @@ FILE: BulkBuddy.Web/Views/Profile/Edit.cshtml
     </form>
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Profile/Index.cshtml
------ CONTENT START -----
+==================================================
 
 @model BulkBuddy.Business.Models.ViewModels.ProfileViewModel
 
@@ -2150,67 +2680,16 @@ FILE: BulkBuddy.Web/Views/Profile/Index.cshtml
 
 </section>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/Views/Shared/DatabaseUnavailable.cshtml
------ CONTENT START -----
+==================================================
+FILE: BulkBuddy.Web/Views/Progress/Index.cshtml
+==================================================
 
-@{
-    ViewData["Title"] = "Database niet beschikbaar";
-}
 
-<section class="dashboard-hero">
-    <div>
-        <h1>Database niet beschikbaar</h1>
-        <p class="hero-text">De applicatie kan op dit moment geen verbinding maken met de database.</p>
-    </div>
-</section>
 
-<section class="dashboard-card">
-    <p>Controleer of Docker en PostgreSQL actief zijn en probeer het daarna opnieuw.</p>
-
-    <div class="action-list" style="margin-top:20px;">
-        <a asp-controller="Account" asp-action="Login" class="dashboard-link">Terug naar login</a>
-    </div>
-</section>
------ CONTENT END -----
-
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/Views/Shared/Error.cshtml
------ CONTENT START -----
-
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
-}
-
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
-
------ CONTENT END -----
-
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Shared/_Layout.cshtml
------ CONTENT START -----
+==================================================
 
 ﻿<!DOCTYPE html>
 <html lang="nl">
@@ -2546,179 +3025,146 @@ FILE: BulkBuddy.Web/Views/Shared/_Layout.cshtml
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/Views/Shared/_Layout.cshtml.css
------ CONTENT START -----
-
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-a {
-  color: #0077cc;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
-}
-
------ CONTENT END -----
-
-ROOT: BulkBuddy.Web
+==================================================
 FILE: BulkBuddy.Web/Views/Shared/_ValidationScriptsPartial.cshtml
------ CONTENT START -----
+==================================================
 
 ﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
 
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/Views/_ViewImports.cshtml
------ CONTENT START -----
+==================================================
+FILE: BulkBuddy.Web/Views/Shared/DatabaseUnavailable.cshtml
+==================================================
 
-﻿@using BulkBuddy.Web
-@using BulkBuddy.Web.Models
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
------ CONTENT END -----
-
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/Views/_ViewStart.cshtml
------ CONTENT START -----
-
-﻿@{
-    Layout = "_Layout";
+@{
+    ViewData["Title"] = "Database niet beschikbaar";
 }
 
------ CONTENT END -----
+<section class="dashboard-hero">
+    <div>
+        <h1>Database niet beschikbaar</h1>
+        <p class="hero-text">De applicatie kan op dit moment geen verbinding maken met de database.</p>
+    </div>
+</section>
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/appsettings.Development.json
------ CONTENT START -----
+<section class="dashboard-card">
+    <p>Controleer of Docker en PostgreSQL actief zijn en probeer het daarna opnieuw.</p>
 
+    <div class="action-list" style="margin-top:20px;">
+        <a asp-controller="Account" asp-action="Login" class="dashboard-link">Terug naar login</a>
+    </div>
+</section>
+
+==================================================
+FILE: BulkBuddy.Web/Views/Shared/Error.cshtml
+==================================================
+
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  }
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
 }
 
------ CONTENT END -----
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+    It can result in displaying sensitive information from exceptions to end users.
+    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
+    and restarting the app.
+</p>
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/appsettings.json
------ CONTENT START -----
 
-{
-  "ConnectionStrings": {
-    "DefaultConnection":  "Host=localhost;Port=5434;Database=bulkbuddy;Username=bulkbuddy;Password=bulkbuddy"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
-}
------ CONTENT END -----
+==================================================
+FILE: BulkBuddy.Web/Views/Training/Add.cshtml
+==================================================
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/wwwroot/css/site.css
------ CONTENT START -----
 
-html {
-  font-size: 14px;
-}
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+==================================================
+FILE: BulkBuddy.Web/Views/Training/Details.cshtml
+==================================================
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
 
-html {
-  position: relative;
-  min-height: 100%;
-}
 
-body {
-  margin-bottom: 60px;
-}
+==================================================
+FILE: BulkBuddy.Web/Views/Training/Index.cshtml
+==================================================
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-/* Layout voor login- en registratiepagina's zonder sidebar */
-.auth-page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    box-sizing: border-box;
-}
------ CONTENT END -----
 
-ROOT: BulkBuddy.Web
-FILE: BulkBuddy.Web/wwwroot/js/site.js
------ CONTENT START -----
+==================================================
+FILE: BulkBuddyV3.slnx
+==================================================
 
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+<Solution>
+</Solution>
 
-// Write your JavaScript code.
 
------ CONTENT END -----
+==================================================
+FILE: meals.sql
+==================================================
 
+INSERT INTO meal_entries
+(
+    user_id,
+    entry_date,
+    meal_date,
+    meal_slot,
+    name,
+    total_calories,
+    protein_grams,
+    carbs_grams,
+    fats_grams,
+    ingredient_summary
+)
+VALUES
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'breakfast',
+    'Breakfast shake',
+    720,
+    45,
+    78,
+    18,
+    'Whey, oats, banana, peanut butter'
+),
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'lunch',
+    'Chicken rice bowl',
+    890,
+    62,
+    95,
+    22,
+    'Chicken, rice, broccoli, sauce'
+),
+(
+    3,
+    CURRENT_DATE,
+    CURRENT_DATE,
+    'dinner',
+    'Salmon potato plate',
+    810,
+    48,
+    70,
+    30,
+    'Salmon, potatoes, vegetables'
+);

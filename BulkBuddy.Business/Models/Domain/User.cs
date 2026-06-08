@@ -1,29 +1,29 @@
 namespace BulkBuddy.Business.Models.Domain;
 
 // Domeinmodel van een gebruiker.
-// anamic/rich models 
-public class User
+
+public record User
 {
-    public int Id { get; set; }
+    // Gevoelige data: alleen leesbaar na aanmaken, nooit direct aanpasbaar van buitenaf.
+    public int Id { get; init; }
 
-    public string Username { get; set; } = "";
-    public string Email { get; set; } = "";
+    public string Username { get; init; } = "";
+    public string Email { get; init; } = "";
 
-    // Nodig voor authenticatie.
-    public string PasswordHash { get; set; } = "";
-    public string PasswordSalt { get; set; } = "";
+    public string PasswordHash { get; init; } = "";
+    public string PasswordSalt { get; init; } = "";
 
-    public int Age { get; set; }
-    public decimal HeightCm { get; set; }
-    public decimal WeightKg { get; set; }
-    public decimal TargetWeightKg { get; set; }
+    public int Age { get; init; }
+    public decimal HeightCm { get; init; }
+    public decimal WeightKg { get; init; }
+    public decimal TargetWeightKg { get; init; }
 
-    public string Goal { get; set; } = "";
-    public string GoalPhase { get; set; } = "";
-    public string Sex { get; set; } = "Man";
+    public string Goal { get; init; } = "";
+    public string GoalPhase { get; init; } = "";
+    public string Sex { get; init; } = "Man";
 
-    public int TrainingFrequencyPerWeek { get; set; }
-    public decimal ActivityMultiplier { get; set; }
+    public int TrainingFrequencyPerWeek { get; init; }
+    public decimal ActivityMultiplier { get; init; }
 
-    public bool OnboardingCompleted { get; set; }
+    public bool OnboardingCompleted { get; init; }
 }

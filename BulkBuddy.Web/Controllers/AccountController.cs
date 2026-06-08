@@ -23,7 +23,7 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Dashboard");
         }
 
-        return View(new LoginViewModel());
+        return View(new LoginViewModel()); 
     }
 
     [HttpPost]
