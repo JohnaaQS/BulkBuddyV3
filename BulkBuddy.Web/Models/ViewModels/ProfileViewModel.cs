@@ -1,6 +1,5 @@
-namespace BulkBuddy.Business.Models.ViewModels;
+namespace BulkBuddy.Web.Models.ViewModels;
 
-// ViewModel voor de profielpagina.
 public class ProfileViewModel
 {
     public string Username { get; set; } = "";

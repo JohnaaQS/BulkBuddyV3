@@ -1,4 +1,6 @@
+using BulkBuddy.Business.Exceptions;
 using BulkBuddy.Business.Services;
+using BulkBuddy.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkBuddy.Web.Controllers;
@@ -22,13 +24,31 @@ public class DashboardController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var viewModel = await _dashboardService.GetDashboardAsync(userId.Value);
-
-        if (viewModel is null)
+        try
         {
-            return View("Empty");
-        }
+            var data = await _dashboardService.GetDashboardAsync(userId.Value);
 
-        return View(viewModel);
+            if (data is null) return View("Empty");
+
+            var viewModel = new DashboardViewModel
+            {
+                Username               = data.Username,
+                WeightKg               = data.WeightKg,
+                HeightCm               = data.HeightCm,
+                TargetWeightKg         = data.TargetWeightKg,
+                GoalPhase              = data.GoalPhase,
+                CalorieTarget          = data.CalorieTarget,
+                CaloriesToday          = data.CaloriesToday,
+                MealsLoggedToday       = data.MealsLoggedToday,
+                RemainingCalories      = data.RemainingCalories,
+                CalorieProgressPercent = data.CalorieProgressPercent
+            };
+
+            return View(viewModel);
+        }
+        catch (DatabaseException)
+        {
+            return View("~/Views/Shared/DatabaseUnavailable.cshtml");
+        }
     }
 }

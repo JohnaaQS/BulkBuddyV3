@@ -1,139 +1,86 @@
+@model BulkBuddy.Web.Models.ViewModels.AddMealViewModel
+
 @{
-
-    ViewData["Title"] = "Add Meal";
-
+    ViewData["Title"] = "Maaltijd toevoegen";
 }
 
 <section class="dashboard-hero">
-
     <div>
-
-        <h1>Add Meal</h1>
-
+        <h1>Maaltijd toevoegen</h1>
         <p class="hero-text">Voeg een maaltijd toe aan je dagoverzicht.</p>
-
     </div>
-
 </section>
 
 <section class="dashboard-grid">
-
     <article class="dashboard-card dashboard-card-highlight">
-
         <h2>Meal details</h2>
 
-        <form class="auth-form">
+        @* asp-controller + asp-action + method="post" zorgt dat data naar de POST handler gaat *@
+        <form asp-controller="Meals" asp-action="Add" method="post" class="auth-form">
+            @Html.AntiForgeryToken()
+
+            @* Toont foutmeldingen — tijdelijk voor debugging *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div style="color:red; margin-bottom:10px;">
+                    @Html.ValidationSummary(false)
+                </div>
+            }
 
             <div class="form-group">
-
-                <label for="mealName">Meal name</label>
-
-                <input id="mealName" class="form-input" type="text" placeholder="Bijv. Chicken rice bowl" />
-
+                <label asp-for="Name">Naam</label>
+                <input asp-for="Name" class="form-input" placeholder="Bijv. Chicken rice bowl" />
             </div>
 
             <div class="auth-grid">
-
                 <div class="form-group">
-
-                    <label for="mealSlot">Meal slot</label>
-
-                    <select id="mealSlot" class="form-input">
-
-                        <option>Breakfast</option>
-
-                        <option>Lunch</option>
-
-                        <option>Dinner</option>
-
-                        <option>Snacks</option>
-
+                    <label asp-for="MealSlot">Meal slot</label>
+                    <select asp-for="MealSlot" class="form-input">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snacks">Snacks</option>
                     </select>
-
                 </div>
 
                 <div class="form-group">
-
-                    <label for="mealDate">Date</label>
-
-                    <input id="mealDate" class="form-input" type="date" />
-
+                    <label asp-for="MealDate">Datum</label>
+                    <input asp-for="MealDate" class="form-input" type="date" />
                 </div>
-
             </div>
 
             <div class="auth-grid">
-
                 <div class="form-group">
-
-                    <label for="calories">Calories</label>
-
-                    <input id="calories" class="form-input" type="number" placeholder="0" />
-
+                    <label asp-for="TotalCalories">Calorieën</label>
+                    <input asp-for="TotalCalories" class="form-input" type="number" placeholder="0" />
                 </div>
 
                 <div class="form-group">
-
-                    <label for="protein">Protein</label>
-
-                    <input id="protein" class="form-input" type="number" placeholder="0" />
-
+                    <label asp-for="ProteinGrams">Eiwitten (g)</label>
+                    <input asp-for="ProteinGrams" class="form-input" type="number" placeholder="0" />
                 </div>
 
                 <div class="form-group">
-
-                    <label for="carbs">Carbs</label>
-
-                    <input id="carbs" class="form-input" type="number" placeholder="0" />
-
+                    <label asp-for="CarbsGrams">Koolhydraten (g)</label>
+                    <input asp-for="CarbsGrams" class="form-input" type="number" placeholder="0" />
                 </div>
 
                 <div class="form-group">
-
-                    <label for="fats">Fats</label>
-
-                    <input id="fats" class="form-input" type="number" placeholder="0" />
-
+                    <label asp-for="FatsGrams">Vetten (g)</label>
+                    <input asp-for="FatsGrams" class="form-input" type="number" placeholder="0" />
                 </div>
-
             </div>
 
             <div class="form-group">
-
-                <label for="summary">Ingredient summary</label>
-
-                <textarea id="summary" class="form-input" rows="5" placeholder="Bijv. Chicken breast, jasmine rice, broccoli, olive oil"></textarea>
-
+                <label asp-for="IngredientSummary">Ingrediënten</label>
+                <textarea asp-for="IngredientSummary" class="form-input" rows="3"
+                    placeholder="Bijv. Chicken breast, jasmine rice, broccoli"></textarea>
             </div>
 
             <div class="action-list">
-
-                <button type="submit" class="dashboard-link">Save Meal</button>
-
-                <a asp-controller="Meals" asp-action="Index" class="dashboard-link">Cancel</a>
-
+                <button type="submit" class="dashboard-link">Opslaan</button>
+                <a asp-controller="Meals" asp-action="Index" class="dashboard-link">Annuleren</a>
             </div>
-
         </form>
-
     </article>
-
-    <article class="dashboard-card">
-
-        <h2>Preview</h2>
-
-        <p><strong>Name:</strong> Meal name preview</p>
-
-        <p><strong>Slot:</strong> Selected slot</p>
-
-        <p><strong>Date:</strong> Selected date</p>
-
-        <p><strong>Calories:</strong> 0</p>
-
-        <p><strong>Macro's:</strong> P 0 / C 0 / F 0</p>
-
-        <p><strong>Summary:</strong> Ingredient summary appears here.</p>
-
-    </article>
-
 </section>

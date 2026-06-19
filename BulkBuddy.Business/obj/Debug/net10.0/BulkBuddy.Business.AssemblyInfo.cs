@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BulkBuddy.Business")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+499b0f5ca19a64461fbf4922b568368ebc96d6c5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+924a2b77fa48dfc858b42cc95a174d794413f5d8")]
 [assembly: System.Reflection.AssemblyProductAttribute("BulkBuddy.Business")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BulkBuddy.Business")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

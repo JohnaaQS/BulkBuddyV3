@@ -1,9 +1,10 @@
-using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Models;
 using BulkBuddy.Business.Repositories;
 
 namespace BulkBuddy.Business.Services;
 
 // Bouwt alle data op die het dashboard nodig heeft.
+// DatabaseException wordt gegooid door de repositories in DataAccess — niet hier.
 public class DashboardService
 {
     private readonly IUserRepository _userRepository;
@@ -20,48 +21,38 @@ public class DashboardService
         _calorieCalculatorService = calorieCalculatorService;
     }
 
-    public async Task<DashboardViewModel?> GetDashboardAsync(int userId)
+    public async Task<DashboardData?> GetDashboardAsync(int userId) 
     {
         var user = await _userRepository.GetByIdAsync(userId);
-
-        if (user is null)
-        {
-            return null;
-        }
+        if (user is null) return null;
 
         var calorieTarget = _calorieCalculatorService.CalculateDailyCalories(user);
-        var caloriesToday = await _mealRepository.GetTotalCaloriesForTodayAsync(user.Id);
-        var mealsLoggedToday = await _mealRepository.GetMealCountForTodayAsync(user.Id);
+
+        // Parallel i.p.v. sequentieel — consistent met MealsPageService
+        var caloriesTodayTask    = _mealRepository.GetTotalCaloriesForTodayAsync(user.Id);
+        var mealsLoggedTodayTask = _mealRepository.GetMealCountForTodayAsync(user.Id);
+        await Task.WhenAll(caloriesTodayTask, mealsLoggedTodayTask);
+
+        var caloriesToday    = caloriesTodayTask.Result;
+        var mealsLoggedToday = mealsLoggedTodayTask.Result;
 
         var remainingCalories = Math.Max(0, calorieTarget - caloriesToday);
-        var progressPercent = calorieTarget <= 0
+        var progressPercent   = calorieTarget <= 0
             ? 0
             : Math.Min(100, (int)Math.Round((double)caloriesToday / calorieTarget * 100));
 
-        return new DashboardViewModel
+        return new DashboardData
         {
-            Username = user.Username,
-            WeightKg = user.WeightKg,
-            HeightCm = user.HeightCm,
-            TargetWeightKg = user.TargetWeightKg,
-            GoalPhase = user.GoalPhase,
-            CalorieTarget = calorieTarget,
-            WelcomeMessage = BuildWelcomeMessage(user.Username, user.GoalPhase),
-            GoalSummary = BuildGoalSummary(user.WeightKg, user.TargetWeightKg, user.GoalPhase),
-            CaloriesToday = caloriesToday,
-            MealsLoggedToday = mealsLoggedToday,
-            RemainingCalories = remainingCalories,
+            Username               = user.Username,
+            WeightKg               = user.WeightKg,
+            HeightCm               = user.HeightCm,
+            TargetWeightKg         = user.TargetWeightKg,
+            GoalPhase              = user.GoalPhase,
+            CalorieTarget          = calorieTarget,
+            CaloriesToday          = caloriesToday,
+            MealsLoggedToday       = mealsLoggedToday,
+            RemainingCalories      = remainingCalories,
             CalorieProgressPercent = progressPercent
         };
-    }
-
-    private static string BuildWelcomeMessage(string username, string goalPhase)
-    {
-        return $"Welkom terug, {username}. Je dashboard staat klaar voor je {goalPhase}-fase.";
-    }
-
-    private static string BuildGoalSummary(decimal currentWeight, decimal targetWeight, string goalPhase)
-    {
-        return $"Je huidige gewicht is {currentWeight} kg en je doelgewicht is {targetWeight} kg tijdens je {goalPhase}-fase.";
     }
 }

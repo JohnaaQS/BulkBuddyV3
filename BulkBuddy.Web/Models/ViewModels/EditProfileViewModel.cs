@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BulkBuddy.Business.Models.ViewModels;
+namespace BulkBuddy.Web.Models.ViewModels;
 
-// ViewModel voor het registratieformulier.
-public class RegisterViewModel
+public class EditProfileViewModel
 {
     [Required(ErrorMessage = "Gebruikersnaam is verplicht.")]
     [StringLength(64)]
@@ -14,31 +13,20 @@ public class RegisterViewModel
     [StringLength(254)]
     public string Email { get; set; } = "";
 
-    [Required(ErrorMessage = "Wachtwoord is verplicht.")]
-    [DataType(DataType.Password)]
-    [MinLength(6, ErrorMessage = "Wachtwoord moet minimaal 6 tekens hebben.")]
-    public string Password { get; set; } = "";
-
-    [Required(ErrorMessage = "Bevestig je wachtwoord.")]
-    [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Wachtwoorden komen niet overeen.")]
-    [Display(Name = "Bevestig wachtwoord")]
-    public string ConfirmPassword { get; set; } = "";
-
     [Range(13, 120, ErrorMessage = "Leeftijd moet tussen 13 en 120 liggen.")]
-    public int Age { get; set; } = 20;
+    public int Age { get; set; }
 
     [Range(typeof(decimal), "1", "300")]
     [Display(Name = "Lengte (cm)")]
-    public decimal HeightCm { get; set; } = 180;
+    public decimal HeightCm { get; set; }
 
     [Range(typeof(decimal), "1", "500")]
     [Display(Name = "Gewicht (kg)")]
-    public decimal WeightKg { get; set; } = 70;
+    public decimal WeightKg { get; set; }
 
     [Range(typeof(decimal), "1", "500")]
     [Display(Name = "Doelgewicht (kg)")]
-    public decimal TargetWeightKg { get; set; } = 80;
+    public decimal TargetWeightKg { get; set; }
 
     [Required]
     [StringLength(32)]
@@ -55,9 +43,9 @@ public class RegisterViewModel
 
     [Range(0, 14)]
     [Display(Name = "Trainingen per week")]
-    public int TrainingFrequencyPerWeek { get; set; } = 3;
+    public int TrainingFrequencyPerWeek { get; set; }
 
     [Range(typeof(decimal), "1.0", "3.0")]
     [Display(Name = "Activity multiplier")]
-    public decimal ActivityMultiplier { get; set; } = 1.55m;
+    public decimal ActivityMultiplier { get; set; }
 }

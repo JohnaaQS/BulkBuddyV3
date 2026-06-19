@@ -1,10 +1,12 @@
+using BulkBuddy.Business.Models;
 using BulkBuddy.Business.Models.Domain;
-using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
 
 namespace BulkBuddy.Business.Services;
 
 // Verwerkt login- en registratieflow.
+// DatabaseException wordt gegooid door de repositories in DataAccess — niet hier.
+// Business hoeft Npgsql niet te kennen.
 public class AuthenticationService
 {
     private readonly IUserRepository _userRepository;
@@ -16,39 +18,31 @@ public class AuthenticationService
         _passwordService = passwordService;
     }
 
-    public async Task<User?> LoginAsync(LoginViewModel model)
+    public async Task<User?> LoginAsync(string usernameOrEmail, string password)
     {
-        var user = await _userRepository.GetByUsernameOrEmailAsync(model.UsernameOrEmail.Trim());
+        var user = await _userRepository.GetByUsernameOrEmailAsync(usernameOrEmail.Trim());
 
-        if (user is null)
-        {
-            return null;
-        }
+        if (user is null) return null;
 
         var isValidPassword = _passwordService.VerifyPassword(
-            model.Password,
+            password,
             user.PasswordHash,
             user.PasswordSalt);
 
         return isValidPassword ? user : null;
     }
 
-    public async Task<(bool Success, string ErrorMessage, int? UserId)> RegisterAsync(RegisterViewModel model)
+    public async Task<(bool Success, string ErrorMessage, int? UserId)> RegisterAsync(RegisterRequest model)
     {
         var existingUsername = await _userRepository.GetByUsernameAsync(model.Username.Trim());
         if (existingUsername is not null)
-        {
             return (false, "Deze gebruikersnaam bestaat al.", null);
-        }
 
         var existingEmail = await _userRepository.GetByEmailAsync(model.Email.Trim());
         if (existingEmail is not null)
-        {
             return (false, "Dit e-mailadres bestaat al.", null);
-        }
 
         var (hash, salt) = _passwordService.HashPassword(model.Password);
-
         var userId = await _userRepository.CreateAsync(model, hash, salt);
 
         return (true, "", userId);

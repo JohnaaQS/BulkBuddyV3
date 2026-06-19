@@ -1,7 +1,8 @@
-using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Exceptions;
+using BulkBuddy.Business.Models;
 using BulkBuddy.Business.Services;
+using BulkBuddy.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql; 
 
 namespace BulkBuddy.Web.Controllers;
 
@@ -23,21 +24,18 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Dashboard");
         }
 
-        return View(new LoginViewModel()); 
+        return View(new LoginViewModel());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
+        if (!ModelState.IsValid) return View(model);
 
         try
         {
-            var user = await _authenticationService.LoginAsync(model);
+            var user = await _authenticationService.LoginAsync(model.UsernameOrEmail, model.Password);
 
             if (user is null)
             {
@@ -50,8 +48,10 @@ public class AccountController : Controller
 
             return RedirectToAction("Index", "Dashboard");
         }
-        catch (NpgsqlException)
+        catch (DatabaseException)
         {
+            // Web kent alleen DatabaseException — niet NpgsqlException.
+            // Business vangt Npgsql op en gooit DatabaseException.
             return View("~/Views/Shared/DatabaseUnavailable.cshtml");
         }
     }
@@ -71,23 +71,43 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) return View(model);
+
+        try
         {
-            return View(model);
+            var request = new RegisterRequest
+            {
+                Username                 = model.Username,
+                Email                    = model.Email,
+                Password                 = model.Password,
+                Age                      = model.Age,
+                HeightCm                 = model.HeightCm,
+                WeightKg                 = model.WeightKg,
+                TargetWeightKg           = model.TargetWeightKg,
+                Goal                     = model.Goal,
+                GoalPhase                = model.GoalPhase,
+                Sex                      = model.Sex,
+                TrainingFrequencyPerWeek = model.TrainingFrequencyPerWeek,
+                ActivityMultiplier       = model.ActivityMultiplier
+            };
+
+            var result = await _authenticationService.RegisterAsync(request);
+
+            if (!result.Success || result.UserId is null)
+            {
+                ModelState.AddModelError(string.Empty, result.ErrorMessage);
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("UserId", result.UserId.Value);
+            HttpContext.Session.SetString("Username", model.Username);
+
+            return RedirectToAction("Index", "Dashboard");
         }
-
-        var result = await _authenticationService.RegisterAsync(model);
-
-        if (!result.Success || result.UserId is null)
+        catch (DatabaseException)
         {
-            ModelState.AddModelError(string.Empty, result.ErrorMessage);
-            return View(model);
+            return View("~/Views/Shared/DatabaseUnavailable.cshtml");
         }
-
-        HttpContext.Session.SetInt32("UserId", result.UserId.Value);
-        HttpContext.Session.SetString("Username", model.Username);
-
-        return RedirectToAction("Index", "Dashboard");
     }
 
     [HttpPost]

@@ -1,15 +1,14 @@
-using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Models;
 
 namespace BulkBuddy.Business.Repositories;
 
-// Contract voor meal-data die op het dashboard getoond wordt.
 public interface IMealRepository
 {
     Task<int> GetTotalCaloriesForTodayAsync(int userId);
     Task<int> GetMealCountForTodayAsync(int userId);
-    Task<List<MealEntryViewModel>> GetMealsForTodayAsync(int userId);
+    Task<List<MealEntry>> GetMealsForTodayAsync(int userId);
 
     // Sla een nieuwe maaltijdinvoer op voor de gebruiker.
     // Data wordt gekopieerd (snapshot) — geen FK naar templates.
-    Task AddMealAsync(int userId, AddMealViewModel model);
+    Task AddMealAsync(int userId, AddMealRequest model);
 }

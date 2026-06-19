@@ -1,4 +1,4 @@
-namespace BulkBuddy.Business.Models.ViewModels;
+namespace BulkBuddy.Web.Models.ViewModels;
 
 public class SavedMealsViewModel
 {

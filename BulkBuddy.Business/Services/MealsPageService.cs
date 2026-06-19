@@ -1,59 +1,45 @@
-using BulkBuddy.Business.Models.ViewModels;
+using BulkBuddy.Business.Models;
 using BulkBuddy.Business.Repositories;
 
 namespace BulkBuddy.Business.Services;
 
 // Bouwt de data op voor de meals overzichtspagina.
+// DatabaseException wordt gegooid door de repositories in DataAccess — niet hier.
 public class MealsPageService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMealRepository _mealRepository;
 
-    // Constructor die de benodigde repositories injecteert.
     public MealsPageService(IUserRepository userRepository, IMealRepository mealRepository)
     {
         _userRepository = userRepository;
         _mealRepository = mealRepository;
     }
 
-    // Haal alle data op die nodig is voor de meals overzichtspagina van de gebruiker.
-    public async Task<MealsIndexViewModel?> GetMealsIndexAsync(int userId)
+    public async Task<MealsIndexData?> GetMealsIndexAsync(int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) return null;
 
-        if (user is null)
-        {
-            return null;
-        }
-
-        // Drie repository-calls parallel uitvoeren i.p.v. sequentieel.
-        // Sequentieel: ~30ms + ~30ms + ~30ms = ~90ms totaal.
-        // Parallel: max(~30ms, ~30ms, ~30ms) = ~30ms totaal.
-        // Task.WhenAll wacht tot alle drie klaar zijn voor we verder gaan.
-        var mealsTask        = _mealRepository.GetMealsForTodayAsync(userId);
-        var totalCalTask     = _mealRepository.GetTotalCaloriesForTodayAsync(userId);
-        var mealCountTask    = _mealRepository.GetMealCountForTodayAsync(userId);
+        // Drie repository-calls parallel — ~30ms i.p.v. ~90ms sequentieel
+        var mealsTask     = _mealRepository.GetMealsForTodayAsync(userId);
+        var totalCalTask  = _mealRepository.GetTotalCaloriesForTodayAsync(userId);
+        var mealCountTask = _mealRepository.GetMealCountForTodayAsync(userId);
 
         await Task.WhenAll(mealsTask, totalCalTask, mealCountTask);
 
-        var meals         = mealsTask.Result;
-        var totalCalories = totalCalTask.Result;
-        var mealCount     = mealCountTask.Result;
-
-        // Bouw en retourneer het ViewModel voor de meals overzichtspagina.
-        return new MealsIndexViewModel
+        return new MealsIndexData
         {
-            Username = user.Username,
-            SelectedDate = DateTime.Today,
-            TotalCaloriesToday = totalCalories,
-            MealsLoggedToday = mealCount,
-            Meals = meals
+            Username           = user.Username,
+            SelectedDate       = DateTime.Today,
+            TotalCaloriesToday = totalCalTask.Result,
+            MealsLoggedToday   = mealCountTask.Result,
+            Meals              = mealsTask.Result
         };
     }
 
-    // Sla een nieuwe maaltijd op voor de gebruiker.
-    // De data uit het formulier (of template) wordt als snapshot opgeslagen in meal_entries.
-    public async Task AddMealAsync(int userId, AddMealViewModel model)
+    // Data wordt als snapshot opgeslagen — geen FK naar template.
+    public async Task AddMealAsync(int userId, AddMealRequest model)
     {
         await _mealRepository.AddMealAsync(userId, model);
     }

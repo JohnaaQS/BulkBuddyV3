@@ -1,0 +1,73 @@
+@model BulkBuddy.Web.Models.ViewModels.TemplateFormViewModel
+
+@{
+    ViewData["Title"] = "Nieuwe template";
+}
+
+<section class="dashboard-hero">
+    <div>
+        <h1>Nieuwe template</h1>
+        <p class="hero-text">Maak een nieuwe persoonlijke maaltijdtemplate aan.</p>
+    </div>
+</section>
+
+<section class="dashboard-card">
+    <form asp-controller="Meals" asp-action="NewTemplate" method="post" class="auth-form">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="validation-error"></div>
+
+        <div class="auth-grid">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-input" placeholder="Bijv. Protein pancakes" />
+                <span asp-validation-for="Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MealSlot"></label>
+                <select asp-for="MealSlot" class="form-input">
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snacks">Snacks</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TotalCalories"></label>
+                <input asp-for="TotalCalories" class="form-input" type="number" placeholder="0" />
+                <span asp-validation-for="TotalCalories" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ProteinGrams"></label>
+                <input asp-for="ProteinGrams" class="form-input" type="number" placeholder="0" />
+                <span asp-validation-for="ProteinGrams" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CarbsGrams"></label>
+                <input asp-for="CarbsGrams" class="form-input" type="number" placeholder="0" />
+                <span asp-validation-for="CarbsGrams" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FatsGrams"></label>
+                <input asp-for="FatsGrams" class="form-input" type="number" placeholder="0" />
+                <span asp-validation-for="FatsGrams" class="validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IngredientSummary"></label>
+            <textarea asp-for="IngredientSummary" class="form-input" rows="3"
+                placeholder="Bijv. Havermout, ei, banaan, honing"></textarea>
+        </div>
+
+        <div class="action-list" style="margin-top: 20px;">
+            <button type="submit" class="dashboard-link">Opslaan</button>
+            <a asp-controller="Meals" asp-action="Saved" class="dashboard-link">Annuleren</a>
+        </div>
+    </form>
+</section>

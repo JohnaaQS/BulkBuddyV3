@@ -318,6 +318,13 @@
                        class="nav-link @(currentController == "Profile" ? "active" : "")">
                         Profile
                     </a>
+
+                    <form asp-controller="Account" asp-action="Logout" method="post" style="margin-top: auto; padding-top: 16px;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="nav-link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: #dc2626;">
+                            Uitloggen
+                        </button>
+                    </form>
                 </nav>
             </aside>
 

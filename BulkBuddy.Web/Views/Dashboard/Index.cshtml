@@ -1,4 +1,4 @@
-@model BulkBuddy.Business.Models.ViewModels.DashboardViewModel
+@model BulkBuddy.Web.Models.ViewModels.DashboardViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -7,7 +7,8 @@
 <section class="dashboard-hero">
     <div>
         <h1>Dashboard</h1>
-        <p class="hero-text">@Model.WelcomeMessage</p>
+        @* Fix #6: WelcomeMessage weggehaald uit Business — View bouwt de string zelf *@
+        <p class="hero-text">Welkom terug, @Model.Username. Je dashboard staat klaar voor je @Model.GoalPhase-fase.</p>
     </div>
 </section>
 
@@ -23,7 +24,8 @@
         <h2>Doel</h2>
         <p><strong>Fase:</strong> @Model.GoalPhase</p>
         <p><strong>Doelgewicht:</strong> @Model.TargetWeightKg kg</p>
-        <p>@Model.GoalSummary</p>
+        @* Fix #6: GoalSummary weggehaald uit Business — View bouwt de string zelf *@
+        <p>Je huidige gewicht is @Model.WeightKg kg en je doelgewicht is @Model.TargetWeightKg kg tijdens je @Model.GoalPhase-fase.</p>
     </article>
 
     <article class="dashboard-card">

@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BulkBuddy.Business.Models.ViewModels;
+namespace BulkBuddy.Web.Models.ViewModels;
 
-// ViewModel voor het loginformulier.
 public class LoginViewModel
 {
     [Required(ErrorMessage = "Gebruikersnaam of e-mail is verplicht.")]

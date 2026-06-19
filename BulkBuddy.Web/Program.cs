@@ -28,6 +28,8 @@ builder.Services.AddScoped<IMealRepository, MealRepository>();
 builder.Services.AddScoped<IMealTemplateRepository, MealTemplateRepository>();
 
 // Application layer
+// OCP: wissel hier de strategie om een andere berekeningsformule te gebruiken.
+builder.Services.AddScoped<ICalorieStrategy, MifflinStJeorStrategy>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<CalorieCalculatorService>();
 builder.Services.AddScoped<AuthenticationService>();

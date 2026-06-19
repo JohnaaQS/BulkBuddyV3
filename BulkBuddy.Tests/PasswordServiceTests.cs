@@ -1,3 +1,4 @@
+// dotnet test BulkBuddy.Tests/BulkBuddy.Tests.csproj
 using BulkBuddy.Business.Services;
 using Xunit;
 

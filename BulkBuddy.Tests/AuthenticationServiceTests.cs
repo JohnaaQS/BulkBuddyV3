@@ -1,5 +1,6 @@
+// dotnet test BulkBuddy.Tests/BulkBuddy.Tests.csproj
+using BulkBuddy.Business.Models;
 using BulkBuddy.Business.Models.Domain;
-using BulkBuddy.Business.Models.ViewModels;
 using BulkBuddy.Business.Repositories;
 using BulkBuddy.Business.Services;
 using Moq;
@@ -27,11 +28,7 @@ public class AuthenticationServiceTests
         _repoMock.Setup(r => r.GetByUsernameOrEmailAsync(It.IsAny<string>()))
                  .ReturnsAsync((User?)null);
 
-        var result = await CreateSut().LoginAsync(new LoginViewModel
-        {
-            UsernameOrEmail = "onbekend",
-            Password = "wachtwoord"
-        });
+        var result = await CreateSut().LoginAsync("onbekend", "wachtwoord");
 
         Assert.Null(result);
     }
@@ -44,11 +41,7 @@ public class AuthenticationServiceTests
         _repoMock.Setup(r => r.GetByUsernameOrEmailAsync("johnaa"))
                  .ReturnsAsync(new User { Username = "johnaa", PasswordHash = hash, PasswordSalt = salt });
 
-        var result = await CreateSut().LoginAsync(new LoginViewModel
-        {
-            UsernameOrEmail = "johnaa",
-            Password = "FoutWachtwoord"
-        });
+        var result = await CreateSut().LoginAsync("johnaa", "FoutWachtwoord");
 
         Assert.Null(result);
     }
@@ -61,11 +54,7 @@ public class AuthenticationServiceTests
         _repoMock.Setup(r => r.GetByUsernameOrEmailAsync("johnaa"))
                  .ReturnsAsync(new User { Username = "johnaa", PasswordHash = hash, PasswordSalt = salt });
 
-        var result = await CreateSut().LoginAsync(new LoginViewModel
-        {
-            UsernameOrEmail = "johnaa",
-            Password = "JuistWachtwoord"
-        });
+        var result = await CreateSut().LoginAsync("johnaa", "JuistWachtwoord");
 
         Assert.NotNull(result);
         Assert.Equal("johnaa", result.Username);
@@ -79,7 +68,7 @@ public class AuthenticationServiceTests
         _repoMock.Setup(r => r.GetByUsernameAsync("johnaa"))
                  .ReturnsAsync(new User { Username = "johnaa" });
 
-        var (success, error, _) = await CreateSut().RegisterAsync(new RegisterViewModel
+        var (success, error, _) = await CreateSut().RegisterAsync(new RegisterRequest
         {
             Username = "johnaa",
             Email = "nieuw@test.nl",
@@ -98,7 +87,7 @@ public class AuthenticationServiceTests
         _repoMock.Setup(r => r.GetByEmailAsync("bestaand@test.nl"))
                  .ReturnsAsync(new User { Email = "bestaand@test.nl" });
 
-        var (success, error, _) = await CreateSut().RegisterAsync(new RegisterViewModel
+        var (success, error, _) = await CreateSut().RegisterAsync(new RegisterRequest
         {
             Username = "nieuw",
             Email = "bestaand@test.nl",
@@ -116,10 +105,10 @@ public class AuthenticationServiceTests
                  .ReturnsAsync((User?)null);
         _repoMock.Setup(r => r.GetByEmailAsync(It.IsAny<string>()))
                  .ReturnsAsync((User?)null);
-        _repoMock.Setup(r => r.CreateAsync(It.IsAny<RegisterViewModel>(), It.IsAny<string>(), It.IsAny<string>()))
+        _repoMock.Setup(r => r.CreateAsync(It.IsAny<RegisterRequest>(), It.IsAny<string>(), It.IsAny<string>()))
                  .ReturnsAsync(42); // gesimuleerde nieuwe userId
 
-        var (success, _, userId) = await CreateSut().RegisterAsync(new RegisterViewModel
+        var (success, _, userId) = await CreateSut().RegisterAsync(new RegisterRequest
         {
             Username = "nieuw",
             Email = "nieuw@test.nl",

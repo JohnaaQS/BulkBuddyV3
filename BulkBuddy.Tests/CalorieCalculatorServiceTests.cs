@@ -1,4 +1,6 @@
+// dotnet test BulkBuddy.Tests/BulkBuddy.Tests.csproj
 using BulkBuddy.Business.Models.Domain;
+using BulkBuddy.Business.Repositories;
 using BulkBuddy.Business.Services;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,7 +10,7 @@ namespace BulkBuddy.Tests;
 // Test: calorieberekening op basis van Mifflin-St Jeor formule.
 public class CalorieCalculatorServiceTests
 {
-    private readonly CalorieCalculatorService _sut = new();
+    private readonly CalorieCalculatorService _sut = new(new MifflinStJeorStrategy());
     private readonly ITestOutputHelper _output;
 
     public CalorieCalculatorServiceTests(ITestOutputHelper output)

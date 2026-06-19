@@ -1,15 +1,13 @@
-namespace BulkBuddy.Business.Models.ViewModels;
+namespace BulkBuddy.Web.Models.ViewModels;
 
-// ViewModel voor één meal entry op de meals-pagina.
-public class MealEntryViewModel
+public class AddMealViewModel
 {
-    public int Id { get; set; }
     public string Name { get; set; } = "";
-    public string MealSlot { get; set; } = "";
+    public string MealSlot { get; set; } = "Breakfast";
+    public DateTime MealDate { get; set; } = DateTime.Today;
     public int TotalCalories { get; set; }
     public int ProteinGrams { get; set; }
     public int CarbsGrams { get; set; }
     public int FatsGrams { get; set; }
     public string IngredientSummary { get; set; } = "";
-    public DateOnly MealDate { get; set; }
 }

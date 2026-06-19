@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/bulkbuddy.web/BulkBuddy.Web.csproj": {}
+    "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/BulkBuddy.Web.csproj": {}
   },
   "projects": {
     "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Business/BulkBuddy.Business.csproj": {
@@ -827,14 +827,14 @@
         }
       }
     },
-    "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/bulkbuddy.web/BulkBuddy.Web.csproj": {
+    "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/BulkBuddy.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/bulkbuddy.web/BulkBuddy.Web.csproj",
+        "projectUniqueName": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/BulkBuddy.Web.csproj",
         "projectName": "BulkBuddy.Web",
-        "projectPath": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/bulkbuddy.web/BulkBuddy.Web.csproj",
+        "projectPath": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/BulkBuddy.Web.csproj",
         "packagesPath": "/Users/johnaaqs/.nuget/packages/",
-        "outputPath": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/bulkbuddy.web/obj/",
+        "outputPath": "/Users/johnaaqs/Library/CloudStorage/OneDrive-Office365Fontys/2025-2026/semester2/BUlkBuddyFULL/BulkBuddyV3/BulkBuddy.Web/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/johnaaqs/.nuget/NuGet/NuGet.Config"
